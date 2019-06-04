@@ -1,0 +1,9 @@
+type Random {
+  list: [Int]!
+  length: Int
+  sum: Int
+}
+
+type Query {
+  getRandomList(length: Int): Random
+}

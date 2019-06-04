@@ -1,0 +1,53 @@
+service: choreapp-backend
+
+frameworkVersion: ">=1.21.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: dev
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:BatchGetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:*:table/*"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-webpack
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    port: 4000
+  webpack:
+    webpackConfig: "webpack.config.js"
+    includeModules: true
+    packager: "yarn"
+    excludeFiles:
+      - src/**/*.test.[t|j]s
+      - "**/*.map.js"
+      - "**/*.js"
+
+functions:
+  graphql:
+    handler: src/handler.graphqlHandler
+    events:
+      - http:
+          path: api
+          method: post
+          cors: true
+  playground:
+    handler: src/handler.playgroundHandler
+    events:
+      - http:
+          path: playground
+          method: get
+          cors: true
