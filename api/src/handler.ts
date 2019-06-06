@@ -10,10 +10,6 @@ const graphQLSchema = makeExecutableSchema({
   logger: console
 });
 
-// console.log("graphQLSchema", graphQLSchema);
-
-const CORS_ORIGIN = "https://zclabs.io";
-
 export const graphqlHandler: Handler = (
   event: APIGatewayEvent,
   context: Context,
@@ -21,8 +17,8 @@ export const graphqlHandler: Handler = (
 ) => {
   const requestOrigin = event.headers.origin,
     callbackFilter = function(error: any, output: any) {
-      if (requestOrigin === CORS_ORIGIN) {
-        output.headers["Access-Control-Allow-Origin"] = CORS_ORIGIN;
+      if (requestOrigin === process.env.CORS_ORIGIN) {
+        output.headers["Access-Control-Allow-Origin"] = process.env.CORS_ORIGIN;
         output.headers["Access-Control-Allow-Credentials"] = "true";
       }
       callback(error, output);
@@ -35,7 +31,6 @@ export const graphqlHandler: Handler = (
   return handler(event, context, callbackFilter);
 };
 
-// for local endpointURL is /graphql and for prod it is /stage/graphql
 export const playgroundHandler: (
   event: APIGatewayEvent,
   context: Context,

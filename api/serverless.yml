@@ -7,6 +7,8 @@ provider:
   runtime: nodejs6.10
   stage: dev
   region: us-east-1
+  environment:
+    RANDOM_TABLE: Random-${self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -17,7 +19,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:table/*"
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.RANDOM_TABLE}"
 
 plugins:
   - serverless-dotenv-plugin
@@ -51,3 +53,21 @@ functions:
           path: playground
           method: get
           cors: true
+
+resources:
+  Resources:
+    RandomTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: ${self:provider.environment.RANDOM_TABLE}
+        AttributeDefinitions:
+          - AttributeName: randomNumberId
+            AttributeType: S
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: randomNumberId
+            KeyType: HASH
+          - AttributeName: username
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
