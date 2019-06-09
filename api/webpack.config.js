@@ -8,12 +8,15 @@ module.exports = {
     server: path.join(__dirname, "/src/graphql/server.ts"),
     random: path.join(__dirname, "/src/graphql/random/resolver.ts")
   },
-  devtool: slsw.lib.webpack.isLocal ? "eval-source-map" : "",
+  optimization: {
+    minimize: false
+  },
+  devtool: "",
   mode: slsw.lib.webpack.isLocal ? "development" : "production",
   target: "node",
   externals: [nodeExternals()],
   resolve: {
-    extensions: [".ts", ".tsx", ".graphql"]
+    extensions: [".ts", ".graphql"]
   },
   module: {
     rules: [
@@ -22,7 +25,7 @@ module.exports = {
     ]
   },
   output: {
-    libraryTarget: "commonjs2",
+    libraryTarget: "commonjs",
     path: path.join(__dirname, "/build"),
     filename: "[name].js",
     sourceMapFilename: "[file].map"
