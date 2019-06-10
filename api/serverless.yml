@@ -1,4 +1,4 @@
-service: choreapp
+service: choreapp-api
 
 frameworkVersion: ">=1.21.0 <2.0.0"
 

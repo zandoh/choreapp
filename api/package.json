@@ -1,4 +1,7 @@
 {
+  "name": "choreapp-api",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
     "test": "jest --no-cache --coverage",
     "start": "serverless offline",
