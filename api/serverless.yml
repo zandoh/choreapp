@@ -47,22 +47,13 @@ custom:
 
 functions:
   graphql:
-    handler: src/handler.graphqlHandler
+    handler: src/handler.handler
     layers:
       - { Ref: DependenciesLayerLambdaLayer }
     events:
       - http:
           path: api
           method: post
-          cors: true
-  playground:
-    handler: src/handler.playgroundHandler
-    layers:
-      - { Ref: DependenciesLayerLambdaLayer }
-    events:
-      - http:
-          path: playground
-          method: get
           cors: true
 
 resources:

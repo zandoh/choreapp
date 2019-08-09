@@ -1,40 +1,88 @@
-import lambdaPlayground from "graphql-playground-middleware-lambda";
-import { Handler, Context, Callback, APIGatewayEvent } from "aws-lambda";
-import { makeExecutableSchema } from "graphql-tools";
-import { typeDefs, resolvers } from "./graphql/server";
-const { ApolloServer } = require("apollo-server-lambda");
+import { Context, Callback, APIGatewayProxyEvent } from "aws-lambda";
+import { ApolloServer, makeExecutableSchema } from "apollo-server-lambda";
+import { resolvers, typeDefs } from "./graphql/app";
+import { DynamoClient } from "./lib/dynamo";
+import { HttpClient } from "./lib/http";
 
-const graphQLSchema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-  logger: console
+/**
+ * User data parsed out of the JWT
+ */
+export interface AppUserContext {
+  username: string;
+  email: string;
+  organization: string;
+}
+
+/**
+ * Injects the user into the incoming API gateway event after
+ * JWT claims have been verified
+ */
+export interface AppGraphQLEvent extends APIGatewayProxyEvent {
+  user: AppUserContext;
+}
+
+/**
+ * Data passed to every resolver function
+ */
+export interface AppGraphQLContext {
+  dynamoClient: DynamoClient;
+  user: AppUserContext;
+}
+
+/**
+ * Creates a new ApolloServer and injects
+ * data into the context that is needed by the application on ApolloServer's
+ * callback for context
+ */
+const server = new ApolloServer({
+  schema: makeExecutableSchema({
+    typeDefs,
+    resolvers
+  }),
+  debug: process.env.APP_ENV === "prod" ? false : true,
+  context: ({
+    event,
+    context
+  }: {
+    event: AppGraphQLEvent;
+    context: AppGraphQLContext;
+  }): AppGraphQLContext => {
+    return {
+      dynamoClient: new DynamoClient(),
+      user: event.user
+    };
+  }
 });
 
-export const graphqlHandler: Handler = (
-  event: APIGatewayEvent,
+/**
+ * Handler function for GraphQL
+ * @param event
+ * @param context
+ * @param callback
+ */
+export const handler = (
+  event: APIGatewayProxyEvent,
   context: Context,
   callback: Callback
 ) => {
-  const requestOrigin = event.headers.origin,
-    callbackFilter = function(error: any, output: any) {
-      if (requestOrigin === process.env.CORS_ORIGIN) {
-        output.headers["Access-Control-Allow-Origin"] = process.env.CORS_ORIGIN;
-        output.headers["Access-Control-Allow-Credentials"] = "true";
-      }
-      callback(error, output);
-    };
-  const handler = new ApolloServer({
-    schema: graphQLSchema,
-    tracing: true
-  }).createHandler();
+  if (
+    event.headers &&
+    event.headers["Content-Type"] &&
+    event.headers["Content-Type"] === "application/graphql"
+  ) {
+    event.body = JSON.stringify({ query: event.body });
+  }
 
-  return handler(event, context, callbackFilter);
+  server.createHandler({
+    cors: {
+      origin: process.env.CORS_ORIGIN,
+      credentials: true
+    }
+  })(event, context, (err: any, data: any) => {
+    if (err) {
+      HttpClient.sendErrorResponse(err, callback);
+    } else {
+      callback(null, data);
+    }
+  });
 };
-
-export const playgroundHandler: (
-  event: APIGatewayEvent,
-  context: Context,
-  callback: Callback
-) => void = lambdaPlayground({
-  endpoint: process.env.GRAPHQL_ENDPOINT
-});

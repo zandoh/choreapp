@@ -5,8 +5,7 @@ const nodeExternals = require("webpack-node-externals");
 module.exports = {
   entry: {
     ...slsw.lib.entries,
-    server: path.join(__dirname, "/src/graphql/server.ts"),
-    random: path.join(__dirname, "/src/graphql/random/resolver.ts")
+    app: path.join(__dirname, "/src/graphql/app.ts")
   },
   optimization: {
     minimize: false
