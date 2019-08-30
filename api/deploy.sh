@@ -15,10 +15,10 @@ done
 
 if [ -z "$env" ]
 then
-      echo "[API] No environment specified. Exiting..."
-      exit 1
+  echo "[API] No environment specified. Exiting..."
+  exit 1
 else
-      echo "[API] Environment is".$env
+  echo "[API] Environment is $env"
 fi
 
 echo '[API] Making directories...'

@@ -1,11 +1,12 @@
 {
   "extends": "../tsconfig",
   "compilerOptions": {
+    "moduleResolution": "node",
     "allowJs": true,
     "module": "esnext",
-    "noEmit": true,
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "noEmit": true
   },
-  "include": ["src"]
+  "include": ["src", "src/**/*"]
 }

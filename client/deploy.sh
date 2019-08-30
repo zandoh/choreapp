@@ -13,11 +13,14 @@ done
 
 if [ -z "$env" ]
 then
-      echo "[CLIENT] No environment specified. Exiting..."
-      exit 1
+  echo "[CLIENT] No environment specified. Exiting..."
+  exit 1
 else
-      echo "[CLIENT] Environment is".$env
+  echo "[CLIENT] Environment is $env"
 fi
+
+echo '[CLIENT] Testing...'
+yarn test --watchAll=false
 
 echo '[CLIENT] Building...'
 yarn build
