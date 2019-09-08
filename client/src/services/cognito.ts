@@ -18,13 +18,21 @@ export class CognitoService {
     };
     const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
     cognitoUser.authenticateUser(authData, {
-      onSuccess: function(result) {
+      onSuccess: result => {
         console.log("result ", result);
         const jwt = result.getAccessToken().getJwtToken();
         console.log("jwt ", jwt);
       },
-      onFailure: function(err) {
+      onFailure: err => {
         alert(err.message || JSON.stringify(err));
+      },
+      newPasswordRequired: (userAttributes, requiredAttributes) => {
+        delete userAttributes.email_verified;
+
+        // store userAttributes on global variable
+        const sessionUserAttributes = userAttributes;
+        console.log("sessionUserAttributes ", sessionUserAttributes);
+        console.log("requiredAttributes ", requiredAttributes);
       }
     });
   }

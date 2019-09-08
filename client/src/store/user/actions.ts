@@ -1,26 +1,23 @@
 import {
   UserActionTypes,
-  USER_UPDATE,
-  USER_REMOVE,
-  USER_GET,
-  UserPayload
+  UserPayload,
+  USER_LOGIN,
+  USER_NEW_PASSWORD,
+  CognitoNewPasswordUserAttributes
 } from "./types";
 
-export const updateUser = (payload: UserPayload): UserActionTypes => {
+export const loginUser = (payload: UserPayload): UserActionTypes => {
   return {
-    type: USER_UPDATE,
+    type: USER_LOGIN,
     payload
   };
 };
 
-export const removeUser = (): Partial<UserActionTypes> => {
+export const newPasswordForUser = (
+  payload: CognitoNewPasswordUserAttributes
+): Partial<UserActionTypes> => {
   return {
-    type: USER_REMOVE
-  };
-};
-
-export const getUser = (): Partial<UserActionTypes> => {
-  return {
-    type: USER_GET
+    type: USER_NEW_PASSWORD,
+    payload: payload
   };
 };
