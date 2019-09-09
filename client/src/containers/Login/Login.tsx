@@ -4,7 +4,13 @@ import { AppState } from "../../store/store";
 import { CognitoService } from "../../services/cognito";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import styled from "styled-components";
-import { Button } from "@chakra-ui/core";
+import {
+  Button,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription
+} from "@chakra-ui/core";
 import { isObjectEmpty } from "../../util";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 import { AppTheme } from "../../theme";
@@ -21,7 +27,7 @@ interface LoginProps extends RouteComponentProps {
 }
 
 const Login: React.FC<LoginProps> = (props: LoginProps) => {
-  const { needsNewPassword, jwt } = useSelector(
+  const { needsNewPassword, jwt, errorMessage, loginFailed } = useSelector(
     (state: AppState) => state.user
   );
 
@@ -88,6 +94,13 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
                   placeholder="New password confirmation"
                 />
               </Fragment>
+            )}
+            {loginFailed && !!errorMessage && (
+              <Alert status="error" variant="left-accent">
+                <AlertIcon />
+                <AlertTitle mr={2}>Error!</AlertTitle>
+                <AlertDescription>{errorMessage}</AlertDescription>
+              </Alert>
             )}
             <Button
               isLoading={isSubmitting}

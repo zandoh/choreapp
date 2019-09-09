@@ -10,7 +10,8 @@ const initialState: UserState = {
   username: "",
   needsNewPassword: false,
   jwt: undefined,
-  loginFailed: false
+  loginFailed: false,
+  errorMessage: ""
 };
 
 export function userReducer(
@@ -21,18 +22,21 @@ export function userReducer(
     case USER_LOGIN:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        loginFailed: false
       };
     case USER_NEW_PASSWORD:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        loginFailed: false
       };
     case USER_LOGIN_FAILED:
       return {
         ...state,
+        ...action.payload,
         jwt: undefined,
-        ...action.payload
+        loginFailed: true
       };
     default:
       return state;

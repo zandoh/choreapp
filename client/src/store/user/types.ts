@@ -9,6 +9,7 @@ export interface UserState {
   needsNewPassword?: boolean;
   jwt?: string;
   loginFailed?: boolean;
+  errorMessage?: string;
 }
 
 interface UserLoginAction {
