@@ -1,4 +1,10 @@
 import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
+import {
+  USER_NEW_PASSWORD,
+  USER_LOGIN,
+  USER_LOGIN_FAILED
+} from "../store/user/types";
+import { store } from "..";
 
 const poolData = {
   UserPoolId: process.env.REACT_APP_COGNITO_USERPOOL as string,
@@ -6,7 +12,29 @@ const poolData = {
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
+const logUserIn = (result: AmazonCognitoIdentity.CognitoUserSession) => {
+  const jwt = result.getAccessToken().getJwtToken();
+  store.dispatch({
+    type: USER_LOGIN,
+    payload: {
+      jwt
+    }
+  });
+};
+
+const loginFailed = (err: any) => {
+  const error = err.message || JSON.stringify(err);
+  store.dispatch({
+    type: USER_LOGIN_FAILED,
+    payload: {
+      errorMessage: error
+    }
+  });
+};
 export class CognitoService {
+  static sessionAttributes = null;
+  static cognitoUser: AmazonCognitoIdentity.CognitoUser;
+
   static login(username: string, password: string) {
     const authData = new AmazonCognitoIdentity.AuthenticationDetails({
       Username: username,
@@ -16,24 +44,39 @@ export class CognitoService {
       Username: username,
       Pool: userPool
     };
-    const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-    cognitoUser.authenticateUser(authData, {
+    CognitoService.cognitoUser = new AmazonCognitoIdentity.CognitoUser(
+      userData
+    );
+    CognitoService.cognitoUser.authenticateUser(authData, {
       onSuccess: result => {
-        console.log("result ", result);
-        const jwt = result.getAccessToken().getJwtToken();
-        console.log("jwt ", jwt);
+        logUserIn(result);
       },
       onFailure: err => {
-        alert(err.message || JSON.stringify(err));
+        loginFailed(err);
       },
       newPasswordRequired: (userAttributes, requiredAttributes) => {
         delete userAttributes.email_verified;
-
-        // store userAttributes on global variable
-        const sessionUserAttributes = userAttributes;
-        console.log("sessionUserAttributes ", sessionUserAttributes);
-        console.log("requiredAttributes ", requiredAttributes);
+        CognitoService.sessionAttributes = userAttributes;
+        store.dispatch({
+          type: USER_NEW_PASSWORD,
+          payload: { needsNewPassword: true }
+        });
       }
     });
+  }
+
+  static setNewPassword(newPassword: string) {
+    CognitoService.cognitoUser.completeNewPasswordChallenge(
+      newPassword,
+      CognitoService.sessionAttributes,
+      {
+        onSuccess: result => {
+          logUserIn(result);
+        },
+        onFailure: err => {
+          loginFailed(err);
+        }
+      }
+    );
   }
 }

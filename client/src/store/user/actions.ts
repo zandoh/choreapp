@@ -1,23 +1,31 @@
 import {
   UserActionTypes,
-  UserPayload,
   USER_LOGIN,
   USER_NEW_PASSWORD,
-  CognitoNewPasswordUserAttributes
+  USER_LOGIN_FAILED
 } from "./types";
 
-export const loginUser = (payload: UserPayload): UserActionTypes => {
+export const loginUser = (payload: { jwt: string }): UserActionTypes => {
   return {
     type: USER_LOGIN,
     payload
   };
 };
 
-export const newPasswordForUser = (
-  payload: CognitoNewPasswordUserAttributes
-): Partial<UserActionTypes> => {
+export const newPasswordForUser = (payload: {
+  needsNewPassword: boolean;
+}): Partial<UserActionTypes> => {
   return {
     type: USER_NEW_PASSWORD,
-    payload: payload
+    payload
+  };
+};
+
+export const loginUserFailed = (payload: {
+  errorMessage: string;
+}): UserActionTypes => {
+  return {
+    type: USER_LOGIN_FAILED,
+    payload
   };
 };

@@ -1,3 +1,15 @@
-export const theme = {
-  change: "I changed this, will you compile?"
+import { theme } from "@chakra-ui/core";
+
+export const appTheme = {
+  ...theme,
+  colors: {
+    ...theme.colors,
+    brand: {
+      900: "#1a365d",
+      800: "#153e75",
+      700: "#2a69ac"
+    }
+  }
 };
+
+export type AppTheme = typeof appTheme;

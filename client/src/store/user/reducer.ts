@@ -1,7 +1,16 @@
-import { UserState, UserActionTypes, USER_LOGIN } from "./types";
+import {
+  UserState,
+  UserActionTypes,
+  USER_LOGIN,
+  USER_NEW_PASSWORD,
+  USER_LOGIN_FAILED
+} from "./types";
 
 const initialState: UserState = {
-  username: "defaultUser"
+  username: "",
+  needsNewPassword: false,
+  jwt: undefined,
+  loginFailed: false
 };
 
 export function userReducer(
@@ -12,6 +21,17 @@ export function userReducer(
     case USER_LOGIN:
       return {
         ...state,
+        ...action.payload
+      };
+    case USER_NEW_PASSWORD:
+      return {
+        ...state,
+        ...action.payload
+      };
+    case USER_LOGIN_FAILED:
+      return {
+        ...state,
+        jwt: undefined,
         ...action.payload
       };
     default:
