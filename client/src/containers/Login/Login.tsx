@@ -9,12 +9,13 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription
+  AlertDescription,
+  useTheme
 } from "@chakra-ui/core";
 import { isObjectEmpty } from "../../util";
-import { RouteComponentProps, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import AppLogo from "../../assets/logo.png";
 import { AppTheme } from "../../theme";
-import { withTheme } from "styled-components";
 
 interface FormErrors {
   email?: string;
@@ -22,108 +23,148 @@ interface FormErrors {
   passwordMismatch?: string;
 }
 
-interface LoginProps extends RouteComponentProps {
-  theme: AppTheme;
-}
-
-const Login: React.FC<LoginProps> = (props: LoginProps) => {
+const Login: React.FC = () => {
+  const theme = useTheme() as AppTheme;
   const { needsNewPassword, jwt, errorMessage, loginFailed } = useSelector(
     (state: AppState) => state.user
   );
 
   return (
     <LoginWrapper>
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-          newPassword: "",
-          newPasswordConfirm: ""
-        }}
-        validate={values => {
-          let errors: FormErrors = {};
+      <FormWrapper>
+        <LogoWrapper>
+          <img src={AppLogo} alt="Application Logo" />
+        </LogoWrapper>
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+            newPassword: "",
+            newPasswordConfirm: ""
+          }}
+          validate={values => {
+            let errors: FormErrors = {};
 
-          if (!values.email) {
-            errors.email = "Required";
-          }
-          if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-            errors.email = "Invalid email address";
-          }
-          if (!values.password) {
-            errors.password = "Required";
-          }
-          if (
-            needsNewPassword &&
-            values.newPassword !== values.newPasswordConfirm
-          ) {
-            errors.passwordMismatch = "Passwords do not match";
-          }
+            if (!values.email) {
+              errors.email = "Required";
+            }
+            if (
+              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            ) {
+              errors.email = "Invalid email address";
+            }
+            if (!values.password) {
+              errors.password = "Required";
+            }
+            if (
+              needsNewPassword &&
+              values.newPassword !== values.newPasswordConfirm
+            ) {
+              errors.passwordMismatch = "Passwords do not match";
+            }
 
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          const { email, password, newPassword } = values;
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            const { email, password, newPassword } = values;
 
-          if (needsNewPassword) {
-            CognitoService.setNewPassword(newPassword);
-          } else {
-            CognitoService.login(email, password);
-          }
+            if (needsNewPassword) {
+              CognitoService.setNewPassword(newPassword);
+            } else {
+              CognitoService.login(email, password);
+            }
 
-          setSubmitting(false);
-        }}
-      >
-        {({ errors, isSubmitting }) => (
-          <StyledForm>
-            {!!jwt && isObjectEmpty(errors) && <Redirect to="/dashboard" />}
-            <StyledErrorMessage name="email" component="div" />
-            <Field type="email" name="email" placeholder="Email" />
-            <StyledErrorMessage name="password" component="div" />
-            <Field type="password" name="password" placeholder="Password" />
-            {needsNewPassword && (
-              <Fragment>
-                <StyledErrorMessage name="passwordMismatch" component="div" />
-                <Field
-                  type="password"
-                  name="newPassword"
-                  placeholder="New password"
-                />
-                <Field
-                  type="password"
-                  name="newPasswordConfirm"
-                  placeholder="New password confirmation"
-                />
-              </Fragment>
-            )}
-            {loginFailed && !!errorMessage && (
-              <Alert status="error" variant="left-accent">
-                <AlertIcon />
-                <AlertTitle mr={2}>Error!</AlertTitle>
-                <AlertDescription>{errorMessage}</AlertDescription>
-              </Alert>
-            )}
-            <Button
-              isLoading={isSubmitting}
-              loadingText="Submitting"
-              type="submit"
-              isDisabled={!isObjectEmpty(errors)}
-            >
-              Submit
-            </Button>
-          </StyledForm>
-        )}
-      </Formik>
+            setSubmitting(false);
+          }}
+        >
+          {({ errors, isSubmitting }) => (
+            <StyledForm>
+              {!!jwt && isObjectEmpty(errors) && <Redirect to="/dashboard" />}
+              <StyledErrorMessage name="email" component="div" />
+              <StyledField
+                theme={theme}
+                type="email"
+                name="email"
+                placeholder="Email"
+              />
+              <StyledErrorMessage name="password" component="div" />
+              <StyledField
+                theme={theme}
+                type="password"
+                name="password"
+                placeholder="Password"
+              />
+              {needsNewPassword && (
+                <Fragment>
+                  <StyledErrorMessage name="passwordMismatch" component="div" />
+                  <StyledField
+                    theme={theme}
+                    type="password"
+                    name="newPassword"
+                    placeholder="New password"
+                  />
+                  <StyledField
+                    theme={theme}
+                    type="password"
+                    name="newPasswordConfirm"
+                    placeholder="New password confirmation"
+                  />
+                </Fragment>
+              )}
+              {loginFailed && !!errorMessage && (
+                <Alert status="error" variant="left-accent">
+                  <AlertIcon />
+                  <AlertTitle mr={2}>Error!</AlertTitle>
+                  <AlertDescription>{errorMessage}</AlertDescription>
+                </Alert>
+              )}
+              <Button
+                isLoading={isSubmitting}
+                loadingText="Submitting"
+                type="submit"
+                isDisabled={!isObjectEmpty(errors)}
+              >
+                Submit
+              </Button>
+            </StyledForm>
+          )}
+        </Formik>
+      </FormWrapper>
     </LoginWrapper>
   );
 };
 
-export default withTheme(Login);
+export default Login;
 
 const LoginWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: rgb(247, 55, 60);
+  background: linear-gradient(
+    45deg,
+    rgba(247, 55, 60, 1) 0%,
+    rgba(252, 171, 68, 1) 100%
+  );
+`;
+
+const LogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  img {
+    display: block;
+    max-width: 150px;
+  }
+`;
+
+const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 4rem;
+  background: white;
+  border-radius: 8px;
 `;
 
 const StyledForm = styled(Form)`
@@ -132,7 +173,16 @@ const StyledForm = styled(Form)`
   min-width: 350px;
 `;
 
+const StyledField = styled(Field)`
+  display: flex;
+  min-height: 42px;
+  border: 1px solid ${props => props.theme.colors.app.lightGrey};
+  margin: 1rem 0 0;
+  border-radius: 8px;
+  padding: 0 0.5rem;
+`;
+
 const StyledErrorMessage = styled(ErrorMessage)`
   color: red;
-  margin-bottom: "0.5rem";
+  margin-top: "0.5rem";
 `;

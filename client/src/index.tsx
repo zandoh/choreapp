@@ -6,17 +6,18 @@ import { createStore } from "redux";
 import { rootReducer } from "./store/store";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { ThemeProvider } from "@chakra-ui/core";
+import { CSSReset, ThemeProvider } from "@chakra-ui/core";
 import { appTheme } from "./theme";
 
 export const store = createStore(rootReducer, composeWithDevTools());
 
 ReactDOM.render(
-  <ThemeProvider theme={appTheme}>
-    <Provider store={store}>
+  <Provider store={store}>
+    <ThemeProvider theme={appTheme}>
+      <CSSReset />
       <App />
-    </Provider>
-  </ThemeProvider>,
+    </ThemeProvider>
+  </Provider>,
   document.getElementById("root")
 );
 
