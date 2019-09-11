@@ -6,7 +6,8 @@ import { createStore } from "redux";
 import { rootReducer } from "./store/store";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { CSSReset, ThemeProvider } from "@chakra-ui/core";
+import { ThemeProvider } from "emotion-theming";
+import { CSSReset } from "@chakra-ui/core";
 import { appTheme } from "./theme";
 
 export const store = createStore(rootReducer, composeWithDevTools());

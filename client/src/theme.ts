@@ -9,7 +9,8 @@ export const appTheme = {
       orange: "#fcab44"
     },
     app: {
-      lightGrey: "#d3d3d3"
+      lightGrey: "#d3d3d3",
+      green: "#61B07F"
     }
   }
 };

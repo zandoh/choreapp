@@ -3,19 +3,17 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../store/store";
 import { CognitoService } from "../../services/cognito";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import {
   Button,
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
-  useTheme
+  AlertDescription
 } from "@chakra-ui/core";
 import { isObjectEmpty } from "../../util";
 import { Redirect } from "react-router-dom";
 import AppLogo from "../../assets/logo.png";
-import { AppTheme } from "../../theme";
 
 interface FormErrors {
   email?: string;
@@ -24,7 +22,6 @@ interface FormErrors {
 }
 
 const Login: React.FC = () => {
-  const theme = useTheme() as AppTheme;
   const [errors, setErrors] = useState({});
   const { needsNewPassword, jwt, errorMessage, loginFailed } = useSelector(
     (state: AppState) => state.user
@@ -88,15 +85,9 @@ const Login: React.FC = () => {
             return (
               <StyledForm>
                 <StyledErrorMessage name="email" component="div" />
-                <StyledField
-                  theme={theme}
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                />
+                <StyledField type="email" name="email" placeholder="Email" />
                 <StyledErrorMessage name="password" component="div" />
                 <StyledField
-                  theme={theme}
                   type="password"
                   name="password"
                   placeholder="Password"
@@ -108,13 +99,11 @@ const Login: React.FC = () => {
                       component="div"
                     />
                     <StyledField
-                      theme={theme}
                       type="password"
                       name="newPassword"
                       placeholder="New password"
                     />
                     <StyledField
-                      theme={theme}
                       type="password"
                       name="newPasswordConfirm"
                       placeholder="New password confirmation"
@@ -128,14 +117,14 @@ const Login: React.FC = () => {
                     <AlertDescription>{errorMessage}</AlertDescription>
                   </Alert>
                 )}
-                <Button
+                <StyledButton
                   isLoading={isSubmitting}
                   loadingText="Submitting"
                   type="submit"
                   isDisabled={!isObjectEmpty(errors)}
                 >
                   Submit
-                </Button>
+                </StyledButton>
               </StyledForm>
             );
           }}
@@ -163,7 +152,7 @@ const LoginWrapper = styled.div`
 const LogoWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin-bottom: ${props => props.theme["space"]["8"]};
   img {
     display: block;
     max-width: 150px;
@@ -187,7 +176,7 @@ const StyledForm = styled(Form)`
 const StyledField = styled(Field)`
   display: flex;
   min-height: 42px;
-  border: 1px solid ${props => props.theme.colors.app.lightGrey};
+  border: 1px solid ${props => props.theme["colors"]["app"]["lightGrey"]};
   margin: 1rem 0 0;
   border-radius: 8px;
   padding: 0 0.5rem;
@@ -196,4 +185,11 @@ const StyledField = styled(Field)`
 const StyledErrorMessage = styled(ErrorMessage)`
   color: red;
   margin-top: "0.5rem";
+`;
+
+const StyledButton = styled(Button)`
+  color: ${props => props.theme["colors"]["white"]};
+  background: ${props => props.theme["colors"]["app"]["green"]};
+  border-radius: 8px;
+  margin-top: 1rem;
 `;
