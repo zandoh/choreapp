@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../../store/store";
 import { CognitoService } from "../../services/cognito";
@@ -25,9 +25,14 @@ interface FormErrors {
 
 const Login: React.FC = () => {
   const theme = useTheme() as AppTheme;
+  const [errors, setErrors] = useState({});
   const { needsNewPassword, jwt, errorMessage, loginFailed } = useSelector(
     (state: AppState) => state.user
   );
+
+  if (!!jwt && isObjectEmpty(errors)) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <LoginWrapper>
@@ -77,57 +82,63 @@ const Login: React.FC = () => {
             setSubmitting(false);
           }}
         >
-          {({ errors, isSubmitting }) => (
-            <StyledForm>
-              {!!jwt && isObjectEmpty(errors) && <Redirect to="/dashboard" />}
-              <StyledErrorMessage name="email" component="div" />
-              <StyledField
-                theme={theme}
-                type="email"
-                name="email"
-                placeholder="Email"
-              />
-              <StyledErrorMessage name="password" component="div" />
-              <StyledField
-                theme={theme}
-                type="password"
-                name="password"
-                placeholder="Password"
-              />
-              {needsNewPassword && (
-                <Fragment>
-                  <StyledErrorMessage name="passwordMismatch" component="div" />
-                  <StyledField
-                    theme={theme}
-                    type="password"
-                    name="newPassword"
-                    placeholder="New password"
-                  />
-                  <StyledField
-                    theme={theme}
-                    type="password"
-                    name="newPasswordConfirm"
-                    placeholder="New password confirmation"
-                  />
-                </Fragment>
-              )}
-              {loginFailed && !!errorMessage && (
-                <Alert status="error" variant="left-accent">
-                  <AlertIcon />
-                  <AlertTitle mr={2}>Error!</AlertTitle>
-                  <AlertDescription>{errorMessage}</AlertDescription>
-                </Alert>
-              )}
-              <Button
-                isLoading={isSubmitting}
-                loadingText="Submitting"
-                type="submit"
-                isDisabled={!isObjectEmpty(errors)}
-              >
-                Submit
-              </Button>
-            </StyledForm>
-          )}
+          {({ errors, isSubmitting }) => {
+            setErrors(errors);
+
+            return (
+              <StyledForm>
+                <StyledErrorMessage name="email" component="div" />
+                <StyledField
+                  theme={theme}
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                />
+                <StyledErrorMessage name="password" component="div" />
+                <StyledField
+                  theme={theme}
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                />
+                {needsNewPassword && (
+                  <Fragment>
+                    <StyledErrorMessage
+                      name="passwordMismatch"
+                      component="div"
+                    />
+                    <StyledField
+                      theme={theme}
+                      type="password"
+                      name="newPassword"
+                      placeholder="New password"
+                    />
+                    <StyledField
+                      theme={theme}
+                      type="password"
+                      name="newPasswordConfirm"
+                      placeholder="New password confirmation"
+                    />
+                  </Fragment>
+                )}
+                {loginFailed && !!errorMessage && (
+                  <Alert status="error" variant="left-accent">
+                    <AlertIcon />
+                    <AlertTitle mr={2}>Error!</AlertTitle>
+                    <AlertDescription>{errorMessage}</AlertDescription>
+                  </Alert>
+                )}
+                <Button
+                  isLoading={isSubmitting}
+                  loadingText="Submitting"
+                  type="submit"
+                  isDisabled={!isObjectEmpty(errors)}
+                >
+                  Submit
+                </Button>
+              </StyledForm>
+            );
+          }}
         </Formik>
       </FormWrapper>
     </LoginWrapper>
