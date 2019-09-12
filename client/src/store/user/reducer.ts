@@ -7,9 +7,7 @@ import {
 } from "./types";
 
 const initialState: UserState = {
-  username: "",
   needsNewPassword: false,
-  jwt: undefined,
   loginFailed: false,
   errorMessage: ""
 };

@@ -9,8 +9,17 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { ThemeProvider } from "emotion-theming";
 import { CSSReset } from "@chakra-ui/core";
 import { appTheme } from "./theme";
+import { UserState } from "./store/user/types";
+import { CognitoService } from "./services/cognito";
 
-export const store = createStore(rootReducer, composeWithDevTools());
+const persistedUser: UserState = {
+  jwt: CognitoService.getUserTokenFromLocalStorage()
+};
+export const store = createStore(
+  rootReducer,
+  { user: persistedUser },
+  composeWithDevTools()
+);
 
 ReactDOM.render(
   <Provider store={store}>

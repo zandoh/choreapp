@@ -79,4 +79,19 @@ export class CognitoService {
       }
     );
   }
+
+  static getUserTokenFromLocalStorage() {
+    const currentUser = userPool.getCurrentUser();
+
+    if (currentUser != null) {
+      return currentUser.getSession((err: any, session: any) => {
+        if (err || !session.isValid()) {
+          return undefined;
+        }
+        return session.getIdToken().getJwtToken();
+      });
+    }
+
+    return undefined;
+  }
 }

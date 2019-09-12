@@ -10,15 +10,9 @@ const ProtectedRoute: React.FC<RouteProps> = ({
   const { jwt } = useSelector((state: AppState) => state.user);
 
   if (!!!jwt) {
-    return (
-      <Route
-        {...props}
-        component={() => <Redirect to={"/login"} />}
-        render={undefined}
-      />
-    );
+    return <Route {...props} component={() => <Redirect to={"/login"} />} />;
   } else {
-    return <Route {...props} />;
+    return <Route {...props} component={component} />;
   }
 };
 

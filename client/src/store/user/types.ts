@@ -5,7 +5,6 @@ export const USER_NEW_PASSWORD = "USER_NEW_PASSWORD";
 export const USER_LOGIN_FAILED = "USER_LOGIN_FAILED";
 
 export interface UserState {
-  username?: string;
   needsNewPassword?: boolean;
   jwt?: string;
   loginFailed?: boolean;
