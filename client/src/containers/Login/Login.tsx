@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../../store/store";
 import { CognitoService } from "../../services/cognito";
@@ -92,31 +92,26 @@ const Login: React.FC = () => {
                   name="password"
                   placeholder="Password"
                 />
-                {needsNewPassword && (
-                  <Fragment>
-                    <StyledErrorMessage
-                      name="passwordMismatch"
-                      component="div"
-                    />
-                    <StyledField
-                      type="password"
-                      name="newPassword"
-                      placeholder="New password"
-                    />
-                    <StyledField
-                      type="password"
-                      name="newPasswordConfirm"
-                      placeholder="New password confirmation"
-                    />
-                  </Fragment>
-                )}
-                {loginFailed && !!errorMessage && (
-                  <Alert status="error" variant="left-accent">
+                <div hidden={!needsNewPassword}>
+                  <StyledErrorMessage name="passwordMismatch" component="div" />
+                  <StyledField
+                    type="password"
+                    name="newPassword"
+                    placeholder="New password"
+                  />
+                  <StyledField
+                    type="password"
+                    name="newPasswordConfirm"
+                    placeholder="New password confirmation"
+                  />
+                </div>
+                <div hidden={!(loginFailed && !!errorMessage)}>
+                  <StyledAlert status="error" variant="left-accent">
                     <AlertIcon />
                     <AlertTitle mr={2}>Error!</AlertTitle>
                     <AlertDescription>{errorMessage}</AlertDescription>
-                  </Alert>
-                )}
+                  </StyledAlert>
+                </div>
                 <StyledButton
                   isLoading={isSubmitting}
                   loadingText="Submitting"
@@ -141,12 +136,7 @@ const LoginWrapper = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: rgb(247, 55, 60);
-  background: linear-gradient(
-    45deg,
-    rgba(247, 55, 60, 1) 0%,
-    rgba(252, 171, 68, 1) 100%
-  );
+  background: ${props => props.theme["colors"]["brand"]["gradient"]};
 `;
 
 const LogoWrapper = styled.div`
@@ -163,7 +153,7 @@ const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 4rem;
-  background: white;
+  background: ${props => props.theme["colors"]["white"]};
   border-radius: 8px;
 `;
 
@@ -184,7 +174,11 @@ const StyledField = styled(Field)`
 
 const StyledErrorMessage = styled(ErrorMessage)`
   color: red;
-  margin-top: "0.5rem";
+  margin-top: 0.5rem;
+`;
+
+const StyledAlert = styled(Alert)`
+  margin-top: 0.5rem;
 `;
 
 const StyledButton = styled(Button)`
