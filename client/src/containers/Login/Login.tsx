@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/core";
 import { isObjectEmpty } from "../../util";
 import { Redirect } from "react-router-dom";
-import AppLogo from "../../assets/logo.png";
+import AuthFormWrapper from "../../components/AuthFormWrapper/AuthFormWrapper";
 
 interface FormErrors {
   email?: string;
@@ -32,130 +32,97 @@ const Login: React.FC = () => {
   }
 
   return (
-    <LoginWrapper>
-      <FormWrapper>
-        <LogoWrapper>
-          <img src={AppLogo} alt="Application Logo" />
-        </LogoWrapper>
-        <Formik
-          initialValues={{
-            email: "",
-            password: "",
-            newPassword: "",
-            newPasswordConfirm: ""
-          }}
-          validate={values => {
-            let errors: FormErrors = {};
+    <AuthFormWrapper>
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+          newPassword: "",
+          newPasswordConfirm: ""
+        }}
+        validate={values => {
+          let errors: FormErrors = {};
 
-            if (!values.email) {
-              errors.email = "Required";
-            }
-            if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-              errors.email = "Invalid email address";
-            }
-            if (!values.password) {
-              errors.password = "Required";
-            }
-            if (
-              needsNewPassword &&
-              values.newPassword !== values.newPasswordConfirm
-            ) {
-              errors.passwordMismatch = "Passwords do not match";
-            }
+          if (!values.email) {
+            errors.email = "Required";
+          }
+          if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+            errors.email = "Invalid email address";
+          }
+          if (!values.password) {
+            errors.password = "Required";
+          }
+          if (
+            needsNewPassword &&
+            values.newPassword !== values.newPasswordConfirm
+          ) {
+            errors.passwordMismatch = "Passwords do not match";
+          }
 
-            return errors;
-          }}
-          onSubmit={(values, { setSubmitting }) => {
-            const { email, password, newPassword } = values;
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          const { email, password, newPassword } = values;
 
-            if (needsNewPassword) {
-              CognitoService.setNewPassword(newPassword);
-            } else {
-              CognitoService.login(email, password);
-            }
+          if (needsNewPassword) {
+            CognitoService.setNewPassword(newPassword);
+          } else {
+            CognitoService.login(email, password);
+          }
 
-            setSubmitting(false);
-          }}
-        >
-          {({ errors, isSubmitting }) => {
-            setErrors(errors);
+          setSubmitting(false);
+        }}
+      >
+        {({ errors, isSubmitting }) => {
+          setErrors(errors);
 
-            return (
-              <StyledForm>
-                <StyledErrorMessage name="email" component="div" />
-                <StyledField type="email" name="email" placeholder="Email" />
-                <StyledErrorMessage name="password" component="div" />
+          return (
+            <StyledForm>
+              <StyledErrorMessage name="email" component="div" />
+              <StyledField type="email" name="email" placeholder="Email" />
+              <StyledErrorMessage name="password" component="div" />
+              <StyledField
+                type="password"
+                name="password"
+                placeholder="Password"
+              />
+              <div hidden={!needsNewPassword}>
+                <StyledErrorMessage name="passwordMismatch" component="div" />
                 <StyledField
                   type="password"
-                  name="password"
-                  placeholder="Password"
+                  name="newPassword"
+                  placeholder="New password"
                 />
-                <div hidden={!needsNewPassword}>
-                  <StyledErrorMessage name="passwordMismatch" component="div" />
-                  <StyledField
-                    type="password"
-                    name="newPassword"
-                    placeholder="New password"
-                  />
-                  <StyledField
-                    type="password"
-                    name="newPasswordConfirm"
-                    placeholder="New password confirmation"
-                  />
-                </div>
-                <div hidden={!(loginFailed && !!errorMessage)}>
-                  <StyledAlert status="error" variant="left-accent">
-                    <AlertIcon />
-                    <AlertTitle mr={2}>Error!</AlertTitle>
-                    <AlertDescription>{errorMessage}</AlertDescription>
-                  </StyledAlert>
-                </div>
-                <StyledButton
-                  isLoading={isSubmitting}
-                  loadingText="Submitting"
-                  type="submit"
-                  isDisabled={!isObjectEmpty(errors)}
-                >
-                  Submit
-                </StyledButton>
-              </StyledForm>
-            );
-          }}
-        </Formik>
-      </FormWrapper>
-    </LoginWrapper>
+                <StyledField
+                  type="password"
+                  name="newPasswordConfirm"
+                  placeholder="New password confirmation"
+                />
+              </div>
+              <div hidden={!(loginFailed && !!errorMessage)}>
+                <StyledAlert status="error" variant="left-accent">
+                  <AlertIcon />
+                  <AlertTitle mr={2}>Error!</AlertTitle>
+                  <AlertDescription>{errorMessage}</AlertDescription>
+                </StyledAlert>
+              </div>
+              <StyledButton
+                isLoading={isSubmitting}
+                loadingText="Submitting"
+                type="submit"
+                isDisabled={!isObjectEmpty(errors)}
+              >
+                Submit
+              </StyledButton>
+            </StyledForm>
+          );
+        }}
+      </Formik>
+    </AuthFormWrapper>
   );
 };
 
 export default Login;
-
-const LoginWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: ${props => props.theme["colors"]["brand"]["gradient"]};
-`;
-
-const LogoWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: ${props => props.theme["space"]["8"]};
-  img {
-    display: block;
-    max-width: 150px;
-  }
-`;
-
-const FormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 4rem;
-  background: ${props => props.theme["colors"]["white"]};
-  border-radius: 8px;
-`;
 
 const StyledForm = styled(Form)`
   display: flex;
