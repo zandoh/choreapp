@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../../store/store";
 import { CognitoService } from "../../services/cognito";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import styled from "@emotion/styled";
-import {
-  Button,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription
-} from "@chakra-ui/core";
+import { Formik } from "formik";
+import { AlertIcon, AlertTitle, AlertDescription } from "@chakra-ui/core";
 import { isObjectEmpty } from "../../util";
 import { Redirect } from "react-router-dom";
 import AuthFormWrapper from "../../components/AuthFormWrapper/AuthFormWrapper";
-
+import {
+  StyledForm,
+  StyledErrorMessage,
+  StyledField,
+  StyledAlert,
+  StyledButton
+} from "./styled";
 interface FormErrors {
   email?: string;
   password?: string;
@@ -123,34 +122,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
-const StyledForm = styled(Form)`
-  display: flex;
-  flex-direction: column;
-  min-width: 350px;
-`;
-
-const StyledField = styled(Field)`
-  display: flex;
-  min-height: 42px;
-  border: 1px solid ${props => props.theme["colors"]["app"]["lightGrey"]};
-  margin: 1rem 0 0;
-  border-radius: 8px;
-  padding: 0 0.5rem;
-`;
-
-const StyledErrorMessage = styled(ErrorMessage)`
-  color: red;
-  margin-top: 0.5rem;
-`;
-
-const StyledAlert = styled(Alert)`
-  margin-top: 0.5rem;
-`;
-
-const StyledButton = styled(Button)`
-  color: ${props => props.theme["colors"]["white"]};
-  background: ${props => props.theme["colors"]["app"]["green"]};
-  border-radius: 8px;
-  margin-top: 1rem;
-`;
