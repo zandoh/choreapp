@@ -20,8 +20,14 @@ else
   echo '[API] Starting deploy '$apiEnv' environment'
   cd ./api
   sh ./deploy.sh env=$apiEnv
-  cd ../
-  echo '[API] Deployed'
+  apiReturnVal=$?
+  if [ $apiReturnVal -ne 0 ]; then
+      echo "[ERROR] Failed deploying API"
+      exit $apiReturnVal
+  else
+    cd ../
+    echo '[API] Deployed'
+  fi
 fi
 
 if [ -z "$clientEnv" ]
@@ -31,6 +37,12 @@ else
   echo '[CLIENT] Starting deploy to '$clientEnv' environment'
   cd ./client
   sh ./deploy.sh env=$clientEnv
-  cd ../
-  echo '[CLIENT] Deployed'
+  clientReturnVal=$?
+  if [ $clientReturnVal -ne 0 ]; then
+      echo "[ERROR] Failed deploying Client"
+      exit $clientReturnVal
+  else
+    cd ../
+    echo '[CLIENT] Deployed'
+  fi
 fi

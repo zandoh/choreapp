@@ -20,10 +20,25 @@ else
 fi
 
 echo '[CLIENT] Testing...'
-yarn test --watchAll=false
+yarn test
+testReturnVal=$? 
+if [ $testReturnVal -ne 0 ]; then
+    echo "[ERROR] Client tests failed"
+    exit $testReturnVal
+fi
 
 echo '[CLIENT] Building...'
 yarn build
+buildReturnVal=$?
+if [ $buildReturnVal -ne 0 ]; then
+    echo "[ERROR] Client build failed"
+    exit $buildReturnVal
+fi
 
 echo '[CLIENT] Deploying...'
 serverless client deploy
+deployReturnVal=$?
+if [ $deployReturnVal -ne 0 ]; then
+    echo "[ERROR] Client deploy failed"
+    exit $deployReturnVal
+fi
