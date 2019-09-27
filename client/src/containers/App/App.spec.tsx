@@ -2,23 +2,45 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { renderWithRouter } from "../../testUtils";
+import { CognitoService } from "../../services/cognito";
+import { Provider } from "react-redux";
+import { ThemeProvider } from "emotion-theming";
+import { appTheme } from "../../theme";
+import { CSSReset } from "@chakra-ui/core";
+import { UserState } from "../../store/user/types";
+import { createStore } from "redux";
+import { rootReducer } from "../../store/store";
 
-it("renders without crashing", () => {
+test("renders without crashing", () => {
+  console.log("renders without crashing..........");
+  const persistedUser: UserState = {
+    jwt: CognitoService.getUserTokenFromLocalStorage()
+  };
+
+  const store = createStore(rootReducer, { user: persistedUser });
   const div = document.createElement("div");
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(
+    <Provider store={store}>
+      <ThemeProvider theme={appTheme}>
+        <CSSReset />
+        <App />
+      </ThemeProvider>
+    </Provider>,
+    div
+  );
 });
 
 fdescribe("routes", () => {
-  it("should redirect to dashboard", () => {
+  test("should redirect to dashboard", () => {
     const { container } = renderWithRouter(<App />, "/");
     console.log("container ", container);
   });
 
-  it("should route to login", () => {});
+  test("should route to login", () => {});
 
-  it("should deny access to dashboard", () => {});
+  test("should deny access to dashboard", () => {});
 
-  it("should route to dashboard", () => {});
+  test("should route to dashboard", () => {});
 
-  it("should route to 404", () => {});
+  test("should route to 404", () => {});
 });
