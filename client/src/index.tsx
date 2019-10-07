@@ -9,16 +9,16 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { ThemeProvider } from "emotion-theming";
 import { CSSReset } from "@chakra-ui/core";
 import { appTheme } from "./theme";
-import { UserState } from "./store/user/types";
-import { CognitoService } from "./services/cognito";
+// import { UserState } from "./store/user/types";
+// import { CognitoService } from "./services/cognito";
 
-const persistedUser: UserState = {
-  jwt: CognitoService.getUserTokenFromLocalStorage()
-};
+// const persistedUser: UserState = {
+//   jwt: CognitoService.getUserTokenFromLocalStorage()
+// };
 
 export const store = createStore(
   rootReducer,
-  { user: persistedUser },
+  // { user: persistedUser },
   composeWithDevTools()
 );
 
@@ -29,7 +29,7 @@ ReactDOM.render(
       <App />
     </ThemeProvider>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById("root") || document.createElement("div") // for testing
 );
 
 // If you want your app to work offline and load faster, you can change
