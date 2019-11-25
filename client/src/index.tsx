@@ -15,6 +15,7 @@ import { CognitoService } from "./services/cognito";
 const persistedUser: UserState = {
   jwt: CognitoService.getUserTokenFromLocalStorage()
 };
+
 export const store = createStore(
   rootReducer,
   { user: persistedUser },
