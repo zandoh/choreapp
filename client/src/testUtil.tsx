@@ -41,7 +41,7 @@ export const renderWithRouter = (
       route = '/',
       history = createMemoryHistory({ initialEntries: [route] }),
     }: { route?: string, history?: MemoryHistory<any> } = { }
-): RenderResult | React.ReactElement<any> => {
+): RenderResult => {
     const RouterProvider = ({ children }: { children?: ReactNode }) => (
         <AppProviders>
             <Router history={history}>
