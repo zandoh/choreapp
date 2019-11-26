@@ -6,16 +6,22 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { Router } from "react-router-dom";
 import { createMemoryHistory, MemoryHistory } from 'history';
+import { AppDataState } from './store/store';
+import { UserState } from './store/user/types';
+import * as reactRedux from 'react-redux';
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 // to allow mocks to be imported out of scope, jest only permits 
 // variables/functions that begin with mock
-export const mockUser = {
-    jwt: 'asdf1234'
+export const mockUser: UserState = {
+    jwt: 'asdf1234',
+    needsNewPassword: false,
+    loginFailed: false,
+    errorMessage: ""
 };
 const mockStore = configureStore([])
-export const initialMockState = {
+export const initialMockState: AppDataState = {
     user: mockUser
 }
 
@@ -50,4 +56,14 @@ export const renderWithRouter = (
         </AppProviders>
     )
     return render(ui, { wrapper: RouterProvider })
+}
+
+export const mockReduxState = (state: Partial<AppDataState>) => {
+    const reactReduxMock = jest.spyOn(reactRedux, 'useSelector');
+    reactReduxMock.mockImplementation(() => {
+        return {
+            ...initialMockState,
+            ...state,
+        }
+    })
 }

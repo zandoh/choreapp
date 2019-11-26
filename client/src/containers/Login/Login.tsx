@@ -25,10 +25,11 @@ const Login: React.FC = () => {
   const { needsNewPassword, jwt, errorMessage, loginFailed } = useSelector(
     (state: AppState) => state.user
   );
-
+  
   if (!!jwt && isObjectEmpty(errors)) {
     return <Redirect to="/dashboard" />;
   }
+
 
   return (
     <AuthFormWrapper>
@@ -76,7 +77,7 @@ const Login: React.FC = () => {
           setErrors(errors);
 
           return (
-            <StyledForm>
+            <StyledForm data-testid="app-login-form">
               <StyledErrorMessage name="email" component="div" />
               <StyledField type="email" name="email" placeholder="Email" />
               <StyledErrorMessage name="password" component="div" />

@@ -1,7 +1,6 @@
 import React from 'react';
-import { renderWithRouter, mockUser } from "../../testUtil";
+import { renderWithRouter, mockReduxState } from "../../testUtil";
 import ProtectedRoute from './ProtectedRoute';
-import * as reactRedux from 'react-redux';
 jest.mock('../../services/cognito');
 
 describe('<ProtectedRoute />', () => {
@@ -10,19 +9,15 @@ describe('<ProtectedRoute />', () => {
     });
 
     test('renders for valid user session', () => {
-        const { container } = renderWithRouter(<ProtectedRoute />);
+        renderWithRouter(<ProtectedRoute />);
     });
 
-    test('redirects to login for invalid user session', () => {
-        const reactReduxMock = jest.spyOn(reactRedux, 'useSelector');
-        reactReduxMock.mockImplementation(() => {
-            return {
-                ...mockUser,
-                jwt: undefined,
+    test('redirects to login for invalid user session', async () => {
+        mockReduxState({
+            user: {
+                jwt: undefined
             }
         })
-        const { container } = renderWithRouter(<ProtectedRoute />);
-
-        console.log('container ', container);
+        renderWithRouter(<ProtectedRoute />, { route: '/dashboard' });
     });
 })
