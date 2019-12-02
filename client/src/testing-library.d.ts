@@ -1,6 +1,8 @@
 /// <reference types="@testing-library/jest-dom" />
 /// <reference types="@testing-library/dom" />
 /// <reference types="@testing-library/react/typings/index" />
+// include jest types to avoid TS2708 namespace as value
+/// <reference types="@types/jest" />
 
 declare module "@testing-library/react" {
   import { queries, Queries, BoundFunction } from "@testing-library/dom";

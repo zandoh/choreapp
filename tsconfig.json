@@ -17,6 +17,8 @@
     "noImplicitReturns": true,
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
+    "sourceMap": true,
+    "removeComments": true,
     "typeRoots": ["node_modules/@types"]
   }
 }
