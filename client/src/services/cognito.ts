@@ -2,9 +2,11 @@ import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
 import {
   USER_NEW_PASSWORD,
   USER_LOGIN,
-  USER_LOGIN_FAILED
+  USER_LOGIN_FAILED,
+  USER_LOGOUT
 } from "../store/user/types";
 import { store } from "..";
+import { AppCognitoUser } from "../types/cognito";
 
 const poolData = {
   UserPoolId: process.env.REACT_APP_COGNITO_USERPOOL as string,
@@ -19,6 +21,13 @@ const logUserIn = (result: AmazonCognitoIdentity.CognitoUserSession) => {
     payload: {
       jwt
     }
+  });
+};
+
+const logUserOut = (user: AmazonCognitoIdentity.CognitoUser) => {
+  user.signOut();
+  store.dispatch({
+    type: USER_LOGOUT
   });
 };
 
@@ -81,17 +90,29 @@ export class CognitoService {
   }
 
   static getUserTokenFromLocalStorage() {
-    const currentUser = userPool.getCurrentUser();
+    const currentUser: AppCognitoUser = userPool.getCurrentUser();
 
     if (currentUser != null) {
       return currentUser.getSession((err: any, session: any) => {
         if (err || !session.isValid()) {
           return undefined;
         }
+        // check if we need to refresh cogntio user
+        // as instance would be undefined since auth came from jwt
+        if (!this.cognitoUser) {
+          CognitoService.cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+            Username: currentUser.username as string,
+            Pool: userPool
+          });
+        }
         return session.getIdToken().getJwtToken();
       });
     }
 
     return undefined;
+  }
+
+  static logout() {
+    logUserOut(this.cognitoUser);
   }
 }

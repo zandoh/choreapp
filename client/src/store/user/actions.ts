@@ -2,13 +2,20 @@ import {
   UserActionTypes,
   USER_LOGIN,
   USER_NEW_PASSWORD,
-  USER_LOGIN_FAILED
+  USER_LOGIN_FAILED,
+  USER_LOGOUT
 } from "./types";
 
 export const loginUser = (payload: { jwt: string }): UserActionTypes => {
   return {
     type: USER_LOGIN,
     payload
+  };
+};
+
+export const logoutUser = (): UserActionTypes => {
+  return {
+    type: USER_LOGOUT
   };
 };
 

@@ -1,12 +1,24 @@
 import { combineReducers } from "redux";
 import { userReducer } from "./user/reducer";
-import { UserState } from "./user/types";
+import { UserState, UserActionTypes, USER_LOGOUT } from "./user/types";
 
-export const rootReducer = combineReducers({
+export type AppActions = UserActionTypes;
+
+export const appReducer = combineReducers({
   user: userReducer
 });
 
-export type AppState = ReturnType<typeof rootReducer>;
-export type AppDataState = {
-  user: UserState
-}
+export const rootReducer = (state: AppDataState, action: AppActions) => {
+  if (action.type === USER_LOGOUT) {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
+export type AppState = ReturnType<typeof appReducer>;
+export type AppDataState =
+  | {
+      user: UserState;
+    }
+  | undefined;

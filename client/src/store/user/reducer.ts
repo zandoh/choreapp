@@ -3,7 +3,8 @@ import {
   UserActionTypes,
   USER_LOGIN,
   USER_NEW_PASSWORD,
-  USER_LOGIN_FAILED
+  USER_LOGIN_FAILED,
+  USER_LOGOUT
 } from "./types";
 
 const initialState: UserState = {
@@ -36,6 +37,8 @@ export function userReducer(
         jwt: undefined,
         loginFailed: true
       };
+    case USER_LOGOUT:
+      return state;
     default:
       return state;
   }
