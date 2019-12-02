@@ -1,7 +1,7 @@
 import { mockUser } from "../../testUtil";
-const generatedMock = jest.genMockFromModule('react-redux');
+const generatedMock = jest.genMockFromModule("react-redux");
 
 export const CognitoService = {
-    ...generatedMock,
-    getUserTokenFromLocalStorage: () => mockUser.jwt
-}
+  ...generatedMock,
+  getUserTokenFromLocalStorage: () => mockUser.jwt
+};
