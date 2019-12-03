@@ -25,11 +25,10 @@ const Login: React.FC = () => {
   const { needsNewPassword, jwt, errorMessage, loginFailed } = useSelector(
     (state: AppState) => state.user
   );
-  
+
   if (!!jwt && isObjectEmpty(errors)) {
     return <Redirect to="/dashboard" />;
   }
-
 
   return (
     <AuthFormWrapper>

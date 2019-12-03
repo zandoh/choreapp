@@ -1,12 +1,22 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { CognitoService } from "../../services/cognito";
+import {
+  DashboardWrapper,
+  HeaderWrapper,
+  SidebarWrapper,
+  BodyWrapper
+} from "./styled";
 
 const Dashboard: React.FC = () => {
   return (
-    <Fragment>
-      <h1>Welcome to Dashboard</h1>
-      <button onClick={() => CognitoService.logout()}>Logout</button>
-    </Fragment>
+    <DashboardWrapper>
+      <HeaderWrapper>
+        <h1>Header</h1>
+        <button onClick={() => CognitoService.logout()}>Logout</button>
+      </HeaderWrapper>
+      <SidebarWrapper>Sidebar</SidebarWrapper>
+      <BodyWrapper>Body</BodyWrapper>
+    </DashboardWrapper>
   );
 };
 
