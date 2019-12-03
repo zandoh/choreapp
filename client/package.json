@@ -44,7 +44,7 @@
     "eject": "react-scripts eject",
     "deploy": "bash deploy.sh",
     "serve": "serve -s build",
-    "upgrade:latest": "yarn upgrade --interactive --latest"
+    "latest": "yarn upgrade --interactive --latest"
   },
   "eslintConfig": {
     "extends": "react-app"
