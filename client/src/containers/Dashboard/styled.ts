@@ -2,15 +2,11 @@ import styled from "@emotion/styled";
 
 export const DashboardLayout = styled("div")`
   display: grid;
-  grid-template-columns: 75px auto;
-  grid-template-rows: 65px auto;
+  grid-template-columns: 90px auto;
+  grid-template-rows: 80px auto;
   grid-template-areas:
   "header header header header header " 
   "sidebar body body body body";
-  padding: ${props => {
-    console.log(props.theme);
-    return "0";
-  }};
 `;
 
 export const HeaderLayout = styled("div")`
@@ -31,7 +27,7 @@ export const SidebarLayout = styled("div")`
 export const BodyLayout = styled("div")`
   grid-column: 2 / 5;
   grid-area: body;
-  padding: 1rem;
+  padding: 32px;
   background: ${props => props.theme["colors"]["app"]["mediumGrey"]};
   z-index: -1;
 `;

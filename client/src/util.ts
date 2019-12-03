@@ -24,3 +24,10 @@ export const saveToLocalStorage = (key: string, value: any) => {
     localStorage.setItem(key, serializedState);
   } catch {}
 };
+
+export enum routes {
+  ROOT = '/',
+  LOGIN = '/login',
+  DASHBOARD = '/dashboard',
+  REPORTS = '/reports',
+}

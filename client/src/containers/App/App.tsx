@@ -9,14 +9,16 @@ import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import Dashboard from "../Dashboard/Dashboard";
 import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
+import { routes } from "../../util";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Switch>
-        <Redirect exact from="/" to="/dashboard" />
-        <Route path="/login" component={Login} />
-        <ProtectedRoute path="/dashboard" component={Dashboard} />
+        <Redirect exact from={routes.ROOT} to={routes.DASHBOARD} />
+        <Route path={routes.LOGIN} component={Login} />
+        <ProtectedRoute path={routes.DASHBOARD} component={Dashboard} />
+        <ProtectedRoute path={routes.REPORTS} component={Dashboard} />
         <Route component={NotFound} />
       </Switch>
     </Router>

@@ -1,25 +1,26 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { CognitoService } from "../../services/cognito";
-import { HeaderWrapper } from "./styled";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { HeaderWrapper, StyledMenuButton, StyledAvatar, LogoWrapper, UserWrapper, StyledFontAwesomeIcon } from "./styled";
 import { faBell } from "@fortawesome/pro-light-svg-icons";
-import { Menu, MenuButton, Button, MenuList, MenuItem } from "@chakra-ui/core";
+import { Menu, MenuList, MenuItem } from "@chakra-ui/core";
 
 const Header: React.FC = () => {
   return (
     <HeaderWrapper>
-      <h1>Header</h1>
-      <Fragment>
-        <FontAwesomeIcon icon={faBell} />
+      <LogoWrapper>
+        Header
+      </LogoWrapper>
+      <UserWrapper>
+        <StyledFontAwesomeIcon size="lg" icon={faBell} />
         <Menu>
-          <MenuButton as={Button}>
-            First Last
-          </MenuButton>
+          <StyledMenuButton>
+            <StyledAvatar size="sm" src="https://bit.ly/broken-link" /> First Last
+          </StyledMenuButton>
           <MenuList>
             <MenuItem onClick={() => CognitoService.logout()}>Logout</MenuItem>
           </MenuList>
         </Menu>
-      </Fragment>
+      </UserWrapper>
     </HeaderWrapper>
   );
 };
