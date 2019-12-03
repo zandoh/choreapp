@@ -11,6 +11,8 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const LogoWrapper = styled.div`
+  width: 250px;
+  height: auto;
 `;
 
 export const UserWrapper = styled.div`
