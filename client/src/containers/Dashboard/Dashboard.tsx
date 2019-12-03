@@ -27,8 +27,8 @@ const Dashboard: React.FC = () => {
         </SidebarLayout>
         <BodyLayout>
           <Switch>
-            <ProtectedRoute path={routes.DASHBOARD} component={Board} />
             <ProtectedRoute path={routes.REPORTS} component={Reports} />
+            <ProtectedRoute path={routes.DASHBOARD} component={Board} />
           </Switch>
         </BodyLayout>
       </DashboardLayout>
