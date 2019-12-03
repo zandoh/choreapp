@@ -1,22 +1,24 @@
 import React from "react";
-import { CognitoService } from "../../services/cognito";
 import {
-  DashboardWrapper,
-  HeaderWrapper,
-  SidebarWrapper,
-  BodyWrapper
+  DashboardLayout,
+  HeaderLayout,
+  SidebarLayout,
+  BodyLayout
 } from "./styled";
+import Header from "../../components/Header/Header";
+import Sidebar from "../../components/Sidebar/Sidebar";
 
 const Dashboard: React.FC = () => {
   return (
-    <DashboardWrapper>
-      <HeaderWrapper>
-        <h1>Header</h1>
-        <button onClick={() => CognitoService.logout()}>Logout</button>
-      </HeaderWrapper>
-      <SidebarWrapper>Sidebar</SidebarWrapper>
-      <BodyWrapper>Body</BodyWrapper>
-    </DashboardWrapper>
+    <DashboardLayout>
+      <HeaderLayout>
+        <Header />
+      </HeaderLayout>
+      <SidebarLayout>
+        <Sidebar />
+      </SidebarLayout>
+      <BodyLayout>Body</BodyLayout>
+    </DashboardLayout>
   );
 };
 
