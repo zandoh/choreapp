@@ -1,3 +1,3 @@
 import styled from '@emotion/styled';
 
-export const BoardWrapper = styled.div``;
+export const Container = styled.div``;
