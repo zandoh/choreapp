@@ -1,0 +1,26 @@
+{
+  "name": "choreapp-gateway-server",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "serverless offline",
+    "deploy-prod": "serverless --stage=production deploy"
+  },
+  "dependencies": {
+    "@apollo/federation": "^0.10.2",
+    "@apollo/gateway": "^0.10.8",
+    "apollo-server-lambda": "^2.9.7",
+    "aws-lambda": "^0.1.2",
+    "choreapp-util": "file:../lib/choreapp-util",
+    "graphql": "^14.5.8"
+  },
+  "devDependencies": {
+    "serverless": "^1.55.1",
+    "serverless-offline": "^5.12.0",
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-graphql-loader": "^1.0.2",
+    "webpack-node-externals": "^1.7.2"
+  }
+}

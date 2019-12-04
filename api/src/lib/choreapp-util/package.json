@@ -1,0 +1,11 @@
+{
+  "name": "choreapp-util",
+  "version": "1.0.0",
+  "description": "Library for choreapp API",
+  "dependencies": {
+    "aws-sdk": "^2.568.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.7"
+  }
+}
