@@ -4,6 +4,10 @@ import {
 	USER_LOGIN,
 	USER_LOGIN_FAILED,
 	USER_LOGOUT,
+	USER_FORGOT_PASSWORD,
+	USER_FORGOT_PASSWORD_FAILED,
+	USER_RESET_PASSWORD_SUCCESS,
+	USER_RESET_PASSWORD_FAILED,
 } from '../store/user/types';
 import { store } from '..';
 import { AppCognitoUser } from '../types/cognito';
@@ -40,9 +44,43 @@ const loginFailed = (err: any) => {
 		},
 	});
 };
+
+const forgotPassword = (data: any) => {
+	console.log('ForgotPassword success data ', data);
+	store.dispatch({
+		type: USER_FORGOT_PASSWORD
+	});
+};
+
+const forgotPasswordFailed = (err: any) => {
+	const error = err.message || JSON.stringify(err);
+	store.dispatch({
+		type: USER_FORGOT_PASSWORD_FAILED,
+		payload: {
+			errorMessage: error
+		}
+	});
+}
+
+const resetPasswordSuccess = () => {
+	store.dispatch({
+		type: USER_RESET_PASSWORD_SUCCESS
+	});
+}
+
+const resetPasswordFailed = (err: any) => {
+	const error = err.message || JSON.stringify(err);
+	store.dispatch({
+		type: USER_RESET_PASSWORD_FAILED,
+		payload: {
+			errorMessage: error
+		}
+	});
+}
 export class CognitoService {
 	static sessionAttributes = null;
 	static cognitoUser: AmazonCognitoIdentity.CognitoUser;
+	static unauthedCognitoUser: AmazonCognitoIdentity.CognitoUser;
 
 	static login(username: string, password: string) {
 		const authData = new AmazonCognitoIdentity.AuthenticationDetails({
@@ -63,7 +101,7 @@ export class CognitoService {
 			onFailure: err => {
 				loginFailed(err);
 			},
-			newPasswordRequired: (userAttributes, requiredAttributes) => {
+			newPasswordRequired: (userAttributes) => {
 				delete userAttributes.email_verified;
 				CognitoService.sessionAttributes = userAttributes;
 				store.dispatch({
@@ -121,28 +159,25 @@ export class CognitoService {
 			Username: username,
 			Pool: userPool,
 		};
-		const unauthedCognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-		unauthedCognitoUser.forgotPassword({
+		CognitoService.unauthedCognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+		CognitoService.unauthedCognitoUser.forgotPassword({
 			onSuccess: data => {
-				console.log('CodeDeliveryData from forgotPassword: ' + data);
+				forgotPassword(data);
 			},
 			onFailure: err => {
-				alert(err.message || JSON.stringify(err));
-			},
-			//Optional automatic callback
-			inputVerificationCode: data => {
-				// console.log('Code sent to: ' + data);
-				// const code = document.getElementById('code').value;
-				// var newPassword = document.getElementById('new_password').value;
-				// cognitoUser.confirmPassword(verificationCode, newPassword, {
-				//     onSuccess() {
-				//         console.log('Password confirmed!');
-				//     },
-				//     onFailure(err) {
-				//         console.log('Password not confirmed!');
-				//     },
-				// });
-			},
+				forgotPasswordFailed(err);
+			}
 		});
+	}
+
+	static resetPassword(verificationCode: string, newPassword: string) {
+        CognitoService.unauthedCognitoUser.confirmPassword(verificationCode, newPassword, {
+            onSuccess() {
+				resetPasswordSuccess();
+            },
+            onFailure(err) {
+				resetPasswordFailed(err);
+            },
+        });
 	}
 }

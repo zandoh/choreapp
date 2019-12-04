@@ -5,12 +5,19 @@ import {
 	USER_NEW_PASSWORD,
 	USER_LOGIN_FAILED,
 	USER_LOGOUT,
+	USER_FORGOT_PASSWORD,
+	USER_FORGOT_PASSWORD_FAILED,
+	USER_RESET_PASSWORD_SUCCESS,
+	USER_RESET_PASSWORD_FAILED,
 } from './types';
 
 const initialState: UserState = {
 	needsNewPassword: false,
 	loginFailed: false,
 	errorMessage: '',
+	forgotPassword: false,
+	forgotPasswordFailed: false,
+	resetPasswordSuccess: false,
 };
 
 export function userReducer(
@@ -39,6 +46,27 @@ export function userReducer(
 			};
 		case USER_LOGOUT:
 			return state;
+		case USER_FORGOT_PASSWORD:
+			return {
+				...state,
+				forgotPassword: true
+			};
+		case USER_FORGOT_PASSWORD_FAILED:
+			return {
+				...state,
+				...action.payload,
+				forgotPasswordFailed: true,
+			};
+		case USER_RESET_PASSWORD_SUCCESS:
+			return {
+				...state,
+				resetPasswordSuccess: true,
+			};
+		case USER_RESET_PASSWORD_FAILED:
+				return {
+					...state,
+					resetPasswordSuccess: false,
+				};
 		default:
 			return state;
 	}
