@@ -1,93 +1,94 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "../../store/store";
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/store';
 // import { CognitoService } from "../../services/cognito";
-import { Formik } from "formik";
-import { AlertIcon, AlertTitle, AlertDescription } from "@chakra-ui/core";
-import { isObjectEmpty } from "../../util";
-import { Redirect } from "react-router-dom";
-import AuthFormWrapper from "../../components/AuthFormWrapper/AuthFormWrapper";
+import { Formik } from 'formik';
+import { AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/core';
+import { isObjectEmpty } from '../../util';
+import { Redirect } from 'react-router-dom';
+import AuthFormWrapper from '../../components/AuthFormWrapper/AuthFormWrapper';
 import {
-  StyledForm,
-  StyledErrorMessage,
-  StyledField,
-  StyledAlert,
-  StyledButton
-} from "../Login/styled";
+	StyledForm,
+	StyledErrorMessage,
+	StyledField,
+	StyledAlert,
+	StyledButton,
+} from '../Login/styled';
 interface FormErrors {
-  email?: string;
-  password?: string;
-  passwordMismatch?: string;
+	email?: string;
+	password?: string;
+	passwordMismatch?: string;
 }
 
 const ForgotPassword: React.FC = () => {
-  const [errors, setErrors] = useState({});
-  const { jwt, errorMessage, loginFailed } = useSelector(
-    (state: AppState) => state.user
-  );
+	const [errors, setErrors] = useState({});
+	const { jwt, errorMessage, loginFailed } = useSelector(
+		(state: AppState) => state.user,
+	);
 
-  if (!!jwt && isObjectEmpty(errors)) {
-    return <Redirect to="/dashboard" />;
-  }
+	if (!!jwt && isObjectEmpty(errors)) {
+		return <Redirect to="/dashboard" />;
+	}
 
-  return (
-    <AuthFormWrapper>
-      <Formik
-        initialValues={{
-          email: ""
-        }}
-        validate={values => {
-          let errors: FormErrors = {};
+	return (
+		<AuthFormWrapper>
+			<Formik
+				initialValues={{
+					email: '',
+				}}
+				validate={values => {
+					let errors: FormErrors = {};
 
-          if (!values.email) {
-            errors.email = "Required";
-          }
-          if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-            errors.email = "Invalid email address";
-          }
+					if (!values.email) {
+						errors.email = 'Required';
+					}
+					if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+						errors.email = 'Invalid email address';
+					}
 
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          // const { email } = values;
+					return errors;
+				}}
+				onSubmit={(values, { setSubmitting }) => {
+					console.log('values ', values);
+					// const { email } = values;
 
-          // if (needsNewPassword) {
-          //   CognitoService.setNewPassword(newPassword);
-          // } else {
-          //   CognitoService.login(email, password);
-          // }
+					// if (needsNewPassword) {
+					//   CognitoService.setNewPassword(newPassword);
+					// } else {
+					//   CognitoService.login(email, password);
+					// }
 
-          setSubmitting(false);
-        }}
-      >
-        {({ errors, isSubmitting }) => {
-          setErrors(errors);
+					setSubmitting(false);
+				}}
+			>
+				{({ errors, isSubmitting }) => {
+					setErrors(errors);
 
-          return (
-            <StyledForm data-testid="app-login-form">
-              <StyledErrorMessage name="email" component="div" />
-              <StyledField type="email" name="email" placeholder="Email" />
-              <div hidden={!(loginFailed && !!errorMessage)}>
-                <StyledAlert status="error" variant="left-accent">
-                  <AlertIcon />
-                  <AlertTitle mr={2}>Error!</AlertTitle>
-                  <AlertDescription>{errorMessage}</AlertDescription>
-                </StyledAlert>
-              </div>
-              <StyledButton
-                isLoading={isSubmitting}
-                loadingText="Submitting"
-                type="submit"
-                isDisabled={!isObjectEmpty(errors)}
-              >
-                Reset Password
-              </StyledButton>
-            </StyledForm>
-          );
-        }}
-      </Formik>
-    </AuthFormWrapper>
-  );
+					return (
+						<StyledForm data-testid="app-login-form">
+							<StyledErrorMessage name="email" component="div" />
+							<StyledField type="email" name="email" placeholder="Email" />
+							<div hidden={!(loginFailed && !!errorMessage)}>
+								<StyledAlert status="error" variant="left-accent">
+									<AlertIcon />
+									<AlertTitle mr={2}>Error!</AlertTitle>
+									<AlertDescription>{errorMessage}</AlertDescription>
+								</StyledAlert>
+							</div>
+							<StyledButton
+								isLoading={isSubmitting}
+								loadingText="Submitting"
+								type="submit"
+								isDisabled={!isObjectEmpty(errors)}
+							>
+								Reset Password
+							</StyledButton>
+						</StyledForm>
+					);
+				}}
+			</Formik>
+		</AuthFormWrapper>
+	);
 };
 
 export default ForgotPassword;

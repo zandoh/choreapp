@@ -1,9 +1,9 @@
-import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
+import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 interface CognitoUserAttributes {
-  username?: string;
+	username?: string;
 }
 
 export type AppCognitoUser =
-  | (AmazonCognitoIdentity.CognitoUser & CognitoUserAttributes)
-  | null;
+	| (AmazonCognitoIdentity.CognitoUser & CognitoUserAttributes)
+	| null;
