@@ -5,8 +5,8 @@ export const DashboardLayout = styled("div")`
   grid-template-columns: 90px auto;
   grid-template-rows: 80px auto;
   grid-template-areas:
-  "header header header header header " 
-  "sidebar body body body body";
+    "header header header header header "
+    "sidebar body body body body";
 `;
 
 export const HeaderLayout = styled("div")`

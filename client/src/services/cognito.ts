@@ -115,4 +115,34 @@ export class CognitoService {
   static logout() {
     logUserOut(this.cognitoUser);
   }
+
+  static forgotPassword(username: string) {
+    const userData = {
+      Username: username,
+      Pool: userPool
+    };
+    const unauthedCognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+    unauthedCognitoUser.forgotPassword({
+      onSuccess: data => {
+        console.log("CodeDeliveryData from forgotPassword: " + data);
+      },
+      onFailure: err => {
+        alert(err.message || JSON.stringify(err));
+      },
+      //Optional automatic callback
+      inputVerificationCode: data => {
+        // console.log('Code sent to: ' + data);
+        // const code = document.getElementById('code').value;
+        // var newPassword = document.getElementById('new_password').value;
+        // cognitoUser.confirmPassword(verificationCode, newPassword, {
+        //     onSuccess() {
+        //         console.log('Password confirmed!');
+        //     },
+        //     onFailure(err) {
+        //         console.log('Password not confirmed!');
+        //     },
+        // });
+      }
+    });
+  }
 }

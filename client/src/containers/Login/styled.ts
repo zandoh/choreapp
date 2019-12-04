@@ -15,6 +15,7 @@ export const StyledField = styled(Field)`
   margin: 1rem 0 0;
   border-radius: 8px;
   padding: 0 0.5rem;
+  width: 100%;
 `;
 
 export const StyledErrorMessage = styled(ErrorMessage)`

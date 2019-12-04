@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../../store/store";
-import { CognitoService } from "../../services/cognito";
+// import { CognitoService } from "../../services/cognito";
 import { Formik } from "formik";
 import { AlertIcon, AlertTitle, AlertDescription } from "@chakra-ui/core";
-import { isObjectEmpty, routes } from "../../util";
-import { Redirect, Link } from "react-router-dom";
+import { isObjectEmpty } from "../../util";
+import { Redirect } from "react-router-dom";
 import AuthFormWrapper from "../../components/AuthFormWrapper/AuthFormWrapper";
 import {
   StyledForm,
@@ -13,16 +13,16 @@ import {
   StyledField,
   StyledAlert,
   StyledButton
-} from "./styled";
+} from "../Login/styled";
 interface FormErrors {
   email?: string;
   password?: string;
   passwordMismatch?: string;
 }
 
-const Login: React.FC = () => {
+const ForgotPassword: React.FC = () => {
   const [errors, setErrors] = useState({});
-  const { needsNewPassword, jwt, errorMessage, loginFailed } = useSelector(
+  const { jwt, errorMessage, loginFailed } = useSelector(
     (state: AppState) => state.user
   );
 
@@ -34,10 +34,7 @@ const Login: React.FC = () => {
     <AuthFormWrapper>
       <Formik
         initialValues={{
-          email: "",
-          password: "",
-          newPassword: "",
-          newPasswordConfirm: ""
+          email: ""
         }}
         validate={values => {
           let errors: FormErrors = {};
@@ -48,26 +45,17 @@ const Login: React.FC = () => {
           if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
             errors.email = "Invalid email address";
           }
-          if (!values.password) {
-            errors.password = "Required";
-          }
-          if (
-            needsNewPassword &&
-            values.newPassword !== values.newPasswordConfirm
-          ) {
-            errors.passwordMismatch = "Passwords do not match";
-          }
 
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          const { email, password, newPassword } = values;
+          // const { email } = values;
 
-          if (needsNewPassword) {
-            CognitoService.setNewPassword(newPassword);
-          } else {
-            CognitoService.login(email, password);
-          }
+          // if (needsNewPassword) {
+          //   CognitoService.setNewPassword(newPassword);
+          // } else {
+          //   CognitoService.login(email, password);
+          // }
 
           setSubmitting(false);
         }}
@@ -79,25 +67,6 @@ const Login: React.FC = () => {
             <StyledForm data-testid="app-login-form">
               <StyledErrorMessage name="email" component="div" />
               <StyledField type="email" name="email" placeholder="Email" />
-              <StyledErrorMessage name="password" component="div" />
-              <StyledField
-                type="password"
-                name="password"
-                placeholder="Password"
-              />
-              <div hidden={!needsNewPassword}>
-                <StyledErrorMessage name="passwordMismatch" component="div" />
-                <StyledField
-                  type="password"
-                  name="newPassword"
-                  placeholder="New password"
-                />
-                <StyledField
-                  type="password"
-                  name="newPasswordConfirm"
-                  placeholder="New password confirmation"
-                />
-              </div>
               <div hidden={!(loginFailed && !!errorMessage)}>
                 <StyledAlert status="error" variant="left-accent">
                   <AlertIcon />
@@ -111,9 +80,8 @@ const Login: React.FC = () => {
                 type="submit"
                 isDisabled={!isObjectEmpty(errors)}
               >
-                Submit
+                Reset Password
               </StyledButton>
-              <Link to={routes.FORGOT_PASSWORD}>Forgot Password?</Link>
             </StyledForm>
           );
         }}
@@ -122,4 +90,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

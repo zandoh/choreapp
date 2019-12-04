@@ -25,7 +25,7 @@ export const StyledMenuButton = styled(MenuButton)`
   align-items: center;
   justify-content: center;
   margin-left: 32px;
-`
+`;
 
 export const StyledAvatar = styled(Avatar)`
   margin-right: 16px;

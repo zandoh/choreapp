@@ -11,9 +11,7 @@ const NotFound: React.FC = () => {
       <img src={NotFoundImageSource} alt="Baby yoda" />
       <StyledText>Oh no! Page not found.</StyledText>
       <Link to={routes.DASHBOARD}>
-        <Button size="md">
-          Dashboard
-        </Button>
+        <Button size="md">Dashboard</Button>
       </Link>
     </NotFoundWrapper>
   );
