@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../store/store';
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { AppState } from "../../store/store";
 import { CognitoService } from "../../services/cognito";
-import { Formik } from 'formik';
-import { AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/core';
-import { isObjectEmpty, routes } from '../../util';
-import { Redirect } from 'react-router-dom';
-import AuthFormWrapper from '../../components/AuthFormWrapper/AuthFormWrapper';
+import { Formik } from "formik";
+import { AlertIcon, AlertTitle, AlertDescription } from "@chakra-ui/core";
+import { isObjectEmpty, routes } from "../../util";
+import { Redirect } from "react-router-dom";
+import AuthFormWrapper from "../../components/AuthFormWrapper/AuthFormWrapper";
 import {
 	StyledForm,
 	StyledErrorMessage,
 	StyledField,
 	StyledAlert,
-	StyledButton,
-} from '../Login/styled';
+	StyledButton
+} from "../Login/styled";
 interface FormErrors {
 	email?: string;
 	newPassword?: string;
@@ -23,9 +23,13 @@ interface FormErrors {
 
 const ForgotPassword: React.FC = () => {
 	const [errors, setErrors] = useState({});
-	const { jwt, errorMessage, forgotPassword, forgotPasswordFailed, resetPasswordSuccess} = useSelector(
-		(state: AppState) => state.user,
-	);
+	const {
+		jwt,
+		errorMessage,
+		forgotPassword,
+		forgotPasswordFailed,
+		resetPasswordSuccess
+	} = useSelector((state: AppState) => state.user);
 
 	if (!!jwt && isObjectEmpty(errors)) {
 		return <Redirect to={routes.DASHBOARD} />;
@@ -39,10 +43,10 @@ const ForgotPassword: React.FC = () => {
 		<AuthFormWrapper>
 			<Formik
 				initialValues={{
-					email: '',
-					verificationCode: '',
-					newPassword: '',
-					newPasswordConfirm: '',
+					email: "",
+					verificationCode: "",
+					newPassword: "",
+					newPasswordConfirm: ""
 				}}
 				validate={values => {
 					let errors: FormErrors = {};
@@ -51,20 +55,20 @@ const ForgotPassword: React.FC = () => {
 					delete errors.passwordMismatch;
 
 					if (!values.email) {
-						errors.email = 'Required';
+						errors.email = "Required";
 					}
 					if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-						errors.email = 'Invalid email address';
+						errors.email = "Invalid email address";
 					}
 					if (forgotPassword) {
 						if (!values.verificationCode) {
-							errors.verificationCode = 'Required';
+							errors.verificationCode = "Required";
 						}
 						if (!values.newPassword) {
-							errors.newPassword = 'Required';
+							errors.newPassword = "Required";
 						}
 						if (values.newPassword !== values.newPasswordConfirm) {
-							errors.passwordMismatch = 'Passwords do not match';
+							errors.passwordMismatch = "Passwords do not match";
 						}
 					}
 
@@ -84,7 +88,7 @@ const ForgotPassword: React.FC = () => {
 			>
 				{({ errors, isSubmitting }) => {
 					setErrors(errors);
-					
+
 					return (
 						<StyledForm data-testid="app-login-form">
 							<StyledErrorMessage name="email" component="div" />

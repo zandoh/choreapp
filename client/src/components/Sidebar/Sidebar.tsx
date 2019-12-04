@@ -1,11 +1,11 @@
-import React from 'react';
-import { SidebarWrapper, StyledFontAwesomeIcon, StyledNavLink } from './styled';
+import React from "react";
+import { SidebarWrapper, StyledFontAwesomeIcon, StyledNavLink } from "./styled";
 import {
 	faColumns,
 	faAnalytics,
-	faUsers,
-} from '@fortawesome/pro-light-svg-icons';
-import { routes } from '../../util';
+	faUsers
+} from "@fortawesome/pro-light-svg-icons";
+import { routes } from "../../util";
 
 const Sidebar: React.FC = () => {
 	return (

@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const LoginWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
-	background: ${props => props.theme['colors']['brand']['gradient']};
+	background: ${props => props.theme["colors"]["brand"]["gradient"]};
 `;
 
 export const LogoWrapper = styled.div`
@@ -22,6 +22,6 @@ export const FormWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 4rem;
-	background: ${props => props.theme['colors']['white']};
+	background: ${props => props.theme["colors"]["white"]};
 	border-radius: 8px;
 `;

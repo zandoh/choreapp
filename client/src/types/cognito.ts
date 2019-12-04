@@ -1,4 +1,4 @@
-import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
 
 interface CognitoUserAttributes {
 	username?: string;

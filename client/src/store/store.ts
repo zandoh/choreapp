@@ -1,11 +1,11 @@
-import { combineReducers } from 'redux';
-import { userReducer } from './user/reducer';
-import { UserState, UserActionTypes, USER_LOGOUT } from './user/types';
+import { combineReducers } from "redux";
+import { userReducer } from "./user/reducer";
+import { UserState, UserActionTypes, USER_LOGOUT } from "./user/types";
 
 export type AppActions = UserActionTypes;
 
 export const appReducer = combineReducers({
-	user: userReducer,
+	user: userReducer
 });
 
 export const rootReducer = (state: AppDataState, action: AppActions) => {

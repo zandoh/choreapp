@@ -1,22 +1,22 @@
-import React from 'react';
-import { renderWithRouter, mockReduxState } from '../../testUtil';
-import ProtectedRoute from './ProtectedRoute';
+import React from "react";
+import { renderWithRouter, mockReduxState } from "../../testUtil";
+import ProtectedRoute from "./ProtectedRoute";
 
-describe('<ProtectedRoute />', () => {
-	test('renders to the document', () => {
+describe("<ProtectedRoute />", () => {
+	test("renders to the document", () => {
 		renderWithRouter(<ProtectedRoute />);
 	});
 
-	test('renders for valid user session', () => {
+	test("renders for valid user session", () => {
 		renderWithRouter(<ProtectedRoute />);
 	});
 
-	test('redirects to login for invalid user session', async () => {
+	test("redirects to login for invalid user session", async () => {
 		mockReduxState({
 			user: {
-				jwt: undefined,
-			},
+				jwt: undefined
+			}
 		});
-		renderWithRouter(<ProtectedRoute />, { route: '/dashboard' });
+		renderWithRouter(<ProtectedRoute />, { route: "/dashboard" });
 	});
 });

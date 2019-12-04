@@ -4,11 +4,11 @@
 // include jest types to avoid TS2708 namespace as value
 /// <reference types="@types/jest" />
 
-declare module '@testing-library/react' {
-	import { queries, Queries, BoundFunction } from '@testing-library/dom';
-	import { act as reactAct } from 'react-dom/test-utils';
+declare module "@testing-library/react" {
+	import { queries, Queries, BoundFunction } from "@testing-library/dom";
+	import { act as reactAct } from "react-dom/test-utils";
 
-	export * from '@testing-library/dom';
+	export * from "@testing-library/dom";
 
 	export type RenderResult<Q extends Queries = typeof queries> = {
 		container: HTMLElement;
@@ -34,11 +34,11 @@ declare module '@testing-library/react' {
 	 */
 	export function render(
 		ui: React.ReactElement<any>,
-		options?: Omit<RenderOptions, 'queries'>,
+		options?: Omit<RenderOptions, "queries">
 	): RenderResult;
 	export function render<Q extends Queries>(
 		ui: React.ReactElement<any>,
-		options: RenderOptions<Q>,
+		options: RenderOptions<Q>
 	): RenderResult<Q>;
 
 	/**

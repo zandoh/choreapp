@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
+import styled from "@emotion/styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink } from "react-router-dom";
 
 export const SidebarWrapper = styled.div`
 	display: flex;
@@ -24,7 +24,7 @@ export const StyledNavLink = styled(NavLink)`
 	box-sizing: content-box;
 	width: 100%;
 	&.selected {
-		color: ${props => props.theme['colors']['brand']['orange']};
-		border-right: 2px solid ${props => props.theme['colors']['brand']['orange']};
+		color: ${props => props.theme["colors"]["brand"]["orange"]};
+		border-right: 2px solid ${props => props.theme["colors"]["brand"]["orange"]};
 	}
 `;

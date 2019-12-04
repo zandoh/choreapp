@@ -1,23 +1,19 @@
 {
 	"arrowParens": "avoid",
 	"bracketSpacing": true,
-	"endOfLine": "lf",
-	"htmlWhitespaceSensitivity": "ignore",
+	"cursorOffset": -1,
+	"endOfLine": "auto",
+	"htmlWhitespaceSensitivity": "css",
+	"insertPragma": false,
 	"jsxBracketSameLine": false,
+	"jsxSingleQuote": false,
 	"printWidth": 80,
 	"proseWrap": "preserve",
+	"quoteProps": "as-needed",
 	"requirePragma": false,
 	"semi": true,
-	"singleQuote": true,
+	"singleQuote": false,
 	"tabWidth": 2,
-	"trailingComma": "all",
-	"useTabs": true,
-	"overrides": [
-		{
-			"files": "*.json",
-			"options": {
-				"printWidth": 200
-			}
-		}
-	]
+	"trailingComma": "none",
+	"useTabs": true
 }

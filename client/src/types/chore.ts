@@ -1,4 +1,4 @@
 export interface IChore {
-    id: string;
-    content: string;
+	id: string;
+	content: string;
 }

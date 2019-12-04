@@ -1,5 +1,5 @@
-import { mockUser } from '../../testUtil';
+import { mockUser } from "../../testUtil";
 
 export const CognitoService = {
-	getUserTokenFromLocalStorage: () => mockUser.jwt,
+	getUserTokenFromLocalStorage: () => mockUser.jwt
 };

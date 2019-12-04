@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
-import { Form, Field, ErrorMessage } from 'formik';
-import { Button, Alert } from '@chakra-ui/core';
-import { Link } from 'react-router-dom';
+import styled from "@emotion/styled";
+import { Form, Field, ErrorMessage } from "formik";
+import { Button, Alert } from "@chakra-ui/core";
+import { Link } from "react-router-dom";
 
 export const StyledForm = styled(Form)`
 	display: flex;
@@ -12,7 +12,7 @@ export const StyledForm = styled(Form)`
 export const StyledField = styled(Field)`
 	display: flex;
 	min-height: 42px;
-	border: 1px solid ${props => props.theme['colors']['app']['lightGrey']};
+	border: 1px solid ${props => props.theme["colors"]["app"]["lightGrey"]};
 	margin: 1rem 0 0;
 	border-radius: 8px;
 	padding: 0 0.5rem;
@@ -29,13 +29,13 @@ export const StyledAlert = styled(Alert)`
 `;
 
 export const StyledButton = styled(Button)`
-	color: ${props => props.theme['colors']['white']};
-	background: ${props => props.theme['colors']['app']['green']};
+	color: ${props => props.theme["colors"]["white"]};
+	background: ${props => props.theme["colors"]["app"]["green"]};
 	border-radius: 8px;
 	margin-top: 1rem;
 `;
 
 export const StyledLink = styled(Link)`
 	margin-top: 16px;
-	color: ${props => props.theme['colors']['app']['blue']};
+	color: ${props => props.theme["colors"]["app"]["blue"]};
 `;

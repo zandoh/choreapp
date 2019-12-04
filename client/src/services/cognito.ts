@@ -1,4 +1,4 @@
-import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
 import {
 	USER_NEW_PASSWORD,
 	USER_LOGIN,
@@ -7,14 +7,14 @@ import {
 	USER_FORGOT_PASSWORD,
 	USER_FORGOT_PASSWORD_FAILED,
 	USER_RESET_PASSWORD_SUCCESS,
-	USER_RESET_PASSWORD_FAILED,
-} from '../store/user/types';
-import { store } from '..';
-import { AppCognitoUser } from '../types/cognito';
+	USER_RESET_PASSWORD_FAILED
+} from "../store/user/types";
+import { store } from "..";
+import { AppCognitoUser } from "../types/cognito";
 
 const poolData = {
 	UserPoolId: process.env.REACT_APP_COGNITO_USERPOOL as string,
-	ClientId: process.env.REACT_APP_COGNITO_CLIENT as string,
+	ClientId: process.env.REACT_APP_COGNITO_CLIENT as string
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
@@ -23,15 +23,15 @@ const logUserIn = (result: AmazonCognitoIdentity.CognitoUserSession) => {
 	store.dispatch({
 		type: USER_LOGIN,
 		payload: {
-			jwt,
-		},
+			jwt
+		}
 	});
 };
 
 const logUserOut = (user: AmazonCognitoIdentity.CognitoUser) => {
 	user.signOut();
 	store.dispatch({
-		type: USER_LOGOUT,
+		type: USER_LOGOUT
 	});
 };
 
@@ -40,13 +40,13 @@ const loginFailed = (err: any) => {
 	store.dispatch({
 		type: USER_LOGIN_FAILED,
 		payload: {
-			errorMessage: error,
-		},
+			errorMessage: error
+		}
 	});
 };
 
 const forgotPassword = (data: any) => {
-	console.log('ForgotPassword success data ', data);
+	console.log("ForgotPassword success data ", data);
 	store.dispatch({
 		type: USER_FORGOT_PASSWORD
 	});
@@ -60,13 +60,13 @@ const forgotPasswordFailed = (err: any) => {
 			errorMessage: error
 		}
 	});
-}
+};
 
 const resetPasswordSuccess = () => {
 	store.dispatch({
 		type: USER_RESET_PASSWORD_SUCCESS
 	});
-}
+};
 
 const resetPasswordFailed = (err: any) => {
 	const error = err.message || JSON.stringify(err);
@@ -76,7 +76,7 @@ const resetPasswordFailed = (err: any) => {
 			errorMessage: error
 		}
 	});
-}
+};
 export class CognitoService {
 	static sessionAttributes = null;
 	static cognitoUser: AmazonCognitoIdentity.CognitoUser;
@@ -85,14 +85,14 @@ export class CognitoService {
 	static login(username: string, password: string) {
 		const authData = new AmazonCognitoIdentity.AuthenticationDetails({
 			Username: username,
-			Password: password,
+			Password: password
 		});
 		const userData = {
 			Username: username,
-			Pool: userPool,
+			Pool: userPool
 		};
 		CognitoService.cognitoUser = new AmazonCognitoIdentity.CognitoUser(
-			userData,
+			userData
 		);
 		CognitoService.cognitoUser.authenticateUser(authData, {
 			onSuccess: result => {
@@ -101,14 +101,14 @@ export class CognitoService {
 			onFailure: err => {
 				loginFailed(err);
 			},
-			newPasswordRequired: (userAttributes) => {
+			newPasswordRequired: userAttributes => {
 				delete userAttributes.email_verified;
 				CognitoService.sessionAttributes = userAttributes;
 				store.dispatch({
 					type: USER_NEW_PASSWORD,
-					payload: { needsNewPassword: true },
+					payload: { needsNewPassword: true }
 				});
-			},
+			}
 		});
 	}
 
@@ -122,8 +122,8 @@ export class CognitoService {
 				},
 				onFailure: err => {
 					loginFailed(err);
-				},
-			},
+				}
+			}
 		);
 	}
 
@@ -140,7 +140,7 @@ export class CognitoService {
 				if (!this.cognitoUser) {
 					CognitoService.cognitoUser = new AmazonCognitoIdentity.CognitoUser({
 						Username: currentUser.username as string,
-						Pool: userPool,
+						Pool: userPool
 					});
 				}
 				return session.getIdToken().getJwtToken();
@@ -157,9 +157,11 @@ export class CognitoService {
 	static forgotPassword(username: string) {
 		const userData = {
 			Username: username,
-			Pool: userPool,
+			Pool: userPool
 		};
-		CognitoService.unauthedCognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+		CognitoService.unauthedCognitoUser = new AmazonCognitoIdentity.CognitoUser(
+			userData
+		);
 		CognitoService.unauthedCognitoUser.forgotPassword({
 			onSuccess: data => {
 				forgotPassword(data);
@@ -171,13 +173,17 @@ export class CognitoService {
 	}
 
 	static resetPassword(verificationCode: string, newPassword: string) {
-        CognitoService.unauthedCognitoUser.confirmPassword(verificationCode, newPassword, {
-            onSuccess() {
-				resetPasswordSuccess();
-            },
-            onFailure(err) {
-				resetPasswordFailed(err);
-            },
-        });
+		CognitoService.unauthedCognitoUser.confirmPassword(
+			verificationCode,
+			newPassword,
+			{
+				onSuccess() {
+					resetPasswordSuccess();
+				},
+				onFailure(err) {
+					resetPasswordFailed(err);
+				}
+			}
+		);
 	}
 }

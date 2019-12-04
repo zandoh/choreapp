@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
-import { MenuButton, Avatar } from '@chakra-ui/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styled from "@emotion/styled";
+import { MenuButton, Avatar } from "@chakra-ui/core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const HeaderWrapper = styled.div`
 	display: flex;

@@ -3,19 +3,19 @@ import {
 	USER_LOGIN,
 	USER_NEW_PASSWORD,
 	USER_LOGIN_FAILED,
-	USER_LOGOUT,
-} from './types';
+	USER_LOGOUT
+} from "./types";
 
 export const loginUser = (payload: { jwt: string }): UserActionTypes => {
 	return {
 		type: USER_LOGIN,
-		payload,
+		payload
 	};
 };
 
 export const logoutUser = (): UserActionTypes => {
 	return {
-		type: USER_LOGOUT,
+		type: USER_LOGOUT
 	};
 };
 
@@ -24,7 +24,7 @@ export const newPasswordForUser = (payload: {
 }): Partial<UserActionTypes> => {
 	return {
 		type: USER_NEW_PASSWORD,
-		payload,
+		payload
 	};
 };
 
@@ -33,6 +33,6 @@ export const loginUserFailed = (payload: {
 }): UserActionTypes => {
 	return {
 		type: USER_LOGIN_FAILED,
-		payload,
+		payload
 	};
 };

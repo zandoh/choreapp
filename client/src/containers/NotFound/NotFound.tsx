@@ -1,9 +1,9 @@
-import React from 'react';
-import { NotFoundWrapper, StyledText } from './styled';
-import NotFoundImageSource from '../../assets/baby.png';
-import { routes } from '../../util';
-import { Button } from '@chakra-ui/core';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { NotFoundWrapper, StyledText } from "./styled";
+import NotFoundImageSource from "../../assets/baby.png";
+import { routes } from "../../util";
+import { Button } from "@chakra-ui/core";
+import { Link } from "react-router-dom";
 
 const NotFound: React.FC = () => {
 	return (

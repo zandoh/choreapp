@@ -26,9 +26,9 @@ export const saveToLocalStorage = (key: string, value: any) => {
 };
 
 export enum routes {
-	ROOT = '/',
-	LOGIN = '/login',
-	FORGOT_PASSWORD = '/forgot-password',
-	DASHBOARD = '/dashboard',
-	REPORTS = '/reports',
+	ROOT = "/",
+	LOGIN = "/login",
+	FORGOT_PASSWORD = "/forgot-password",
+	DASHBOARD = "/dashboard",
+	REPORTS = "/reports"
 }

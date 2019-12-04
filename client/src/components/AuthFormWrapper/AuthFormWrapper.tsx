@@ -1,13 +1,13 @@
-import React from 'react';
-import AppLogo from '../../assets/logo.png';
-import { LoginWrapper, FormWrapper, LogoWrapper } from './styled';
+import React from "react";
+import AppLogo from "../../assets/logo.png";
+import { LoginWrapper, FormWrapper, LogoWrapper } from "./styled";
 
 interface AuthFormWrapperProps {
 	children?: JSX.Element;
 }
 
 const AuthFormWrapper: React.FC<AuthFormWrapperProps> = (
-	props: AuthFormWrapperProps,
+	props: AuthFormWrapperProps
 ) => {
 	return (
 		<LoginWrapper>

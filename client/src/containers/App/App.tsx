@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 import {
 	BrowserRouter as Router,
 	Route,
 	Switch,
-	Redirect,
-} from 'react-router-dom';
-import Login from '../Login/Login';
-import NotFound from '../NotFound/NotFound';
-import Dashboard from '../Dashboard/Dashboard';
-import ProtectedRoute from '../../components/ProtectedRoute/ProtectedRoute';
-import ForgotPassword from '../ForgotPassword/ForgotPassword';
-import { routes } from '../../util';
+	Redirect
+} from "react-router-dom";
+import Login from "../Login/Login";
+import NotFound from "../NotFound/NotFound";
+import Dashboard from "../Dashboard/Dashboard";
+import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
+import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import { routes } from "../../util";
 
 const App: React.FC = () => {
 	return (
