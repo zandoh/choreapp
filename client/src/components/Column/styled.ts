@@ -1,20 +1,19 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
-	margin: 8px;
-	border: 1px solid lightgrey;
-	border-radius: 2px;
-	width: 220px;
-
 	display: flex;
 	flex-direction: column;
+	min-width: 315px;
+	user-select: none;
 `;
+
 export const Title = styled.h3`
-	padding: 8px;
+	font-size: 24px;
+	font-weight: 600;
+	padding-bottom: 16px;
 `;
+
 export const ChoreList = styled.div`
-	padding: 8px;
 	transition: background-color 0.2s ease;
-	flex-grow: 1;
 	min-height: 100px;
 `;

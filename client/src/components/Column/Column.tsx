@@ -20,12 +20,7 @@ const Column: React.FC<ColumnProps> = (props: ColumnProps) => {
 				{provided => (
 					<ChoreList ref={provided.innerRef} {...provided.droppableProps}>
 						{chores.map((chore, index) => (
-							<Chore
-								key={chore.id}
-								id={chore.id}
-								index={index}
-								content={chore.content}
-							/>
+							<Chore key={chore.id} id={chore.id} index={index} chore={chore} />
 						))}
 						{provided.placeholder}
 					</ChoreList>

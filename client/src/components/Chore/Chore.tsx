@@ -1,15 +1,16 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { Container } from "../Column/styled";
+import { Container } from "../Chore/styled";
+import { IChore } from "../../types/board";
 
 interface ChoreProps {
 	id: string;
 	index: number;
-	content: string;
+	chore: IChore;
 }
 
 const Chore: React.FC<ChoreProps> = (props: ChoreProps) => {
-	const { id, index, content } = props;
+	const { id, index, chore } = props;
 
 	return (
 		<Draggable draggableId={id} index={index}>
@@ -19,7 +20,7 @@ const Chore: React.FC<ChoreProps> = (props: ChoreProps) => {
 					{...provided.draggableProps}
 					{...provided.dragHandleProps}
 				>
-					{content}
+					{chore.content}
 				</Container>
 			)}
 		</Draggable>
