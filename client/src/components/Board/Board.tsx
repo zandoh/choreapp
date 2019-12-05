@@ -17,6 +17,7 @@ const Board: React.FC = () => {
 	const [chores, setChores]: [IChore[], any] = useState(data);
 
 	const onDragEnd = (result: DropResult) => {
+		console.log("result ", result);
 		// if the draggable didn't land on a droppable target
 		if (!result.destination) {
 			return;
@@ -25,7 +26,7 @@ const Board: React.FC = () => {
 		// if the draggable didn't move positions in the droppable
 		if (
 			result.source.droppableId === result.destination.droppableId &&
-			result.destination.index === result.source.index
+			result.source.index === result.destination.index
 		) {
 			return;
 		}
@@ -34,6 +35,7 @@ const Board: React.FC = () => {
 		if (result.source.droppableId !== result.destination.droppableId) {
 			chores.forEach((chore: IChore) => {
 				if (chore.id === result.draggableId) {
+					console.log("chore ", chore);
 					chore.state = ChoreState.DONE;
 				}
 			});

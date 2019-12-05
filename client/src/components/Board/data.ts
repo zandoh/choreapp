@@ -5,10 +5,10 @@ export const data = [
 	{
 		id: "chore-2",
 		content: "Wash dishes",
-		state: ChoreState.TO_DO
+		state: ChoreState.IN_PROGRESS
 	},
 	{ id: "chore-3", content: "Sweep floors", state: ChoreState.TO_DO },
-	{ id: "chore-4", content: "Cook dinner", state: ChoreState.TO_DO }
+	{ id: "chore-4", content: "Cook dinner", state: ChoreState.DONE }
 ];
 
 export const columns = [
