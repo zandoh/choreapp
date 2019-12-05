@@ -12,7 +12,7 @@ interface ColumnProps {
 
 const Column: React.FC<ColumnProps> = (props: ColumnProps) => {
 	const { title, id, chores = [] } = props;
-	console.log("chores ", chores);
+
 	return (
 		<Container>
 			<Title>{title}</Title>

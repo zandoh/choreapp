@@ -14,6 +14,7 @@ export const HeaderLayout = styled("div")`
 	grid-area: header;
 	background: ${props => props.theme["colors"]["app"]["white"]};
 	box-shadow: ${props => props.theme["shadow"]["header"]};
+	z-index: 5;
 `;
 
 export const SidebarLayout = styled("div")`
@@ -22,6 +23,7 @@ export const SidebarLayout = styled("div")`
 	min-height: 100vh;
 	background: ${props => props.theme["colors"]["app"]["white"]};
 	box-shadow: ${props => props.theme["shadow"]["sidebar"]};
+	z-index: 5;
 `;
 
 export const BodyLayout = styled("div")`
@@ -29,5 +31,5 @@ export const BodyLayout = styled("div")`
 	grid-area: body;
 	padding: 32px;
 	background: ${props => props.theme["colors"]["app"]["mediumGrey"]};
-	z-index: -1;
+	z-index: 0;
 `;

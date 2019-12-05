@@ -3,7 +3,8 @@ import { SidebarWrapper, StyledFontAwesomeIcon, StyledNavLink } from "./styled";
 import {
 	faColumns,
 	faAnalytics,
-	faUsers
+	faUsers,
+	faThList
 } from "@fortawesome/pro-light-svg-icons";
 import { routes } from "../../util";
 
@@ -16,6 +17,7 @@ const Sidebar: React.FC = () => {
 			<StyledNavLink to={routes.REPORTS} activeClassName="selected">
 				<StyledFontAwesomeIcon size="2x" icon={faAnalytics} />
 			</StyledNavLink>
+			<StyledFontAwesomeIcon size="2x" icon={faThList} />
 			<StyledFontAwesomeIcon size="2x" icon={faUsers} />
 		</SidebarWrapper>
 	);

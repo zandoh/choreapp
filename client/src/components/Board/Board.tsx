@@ -3,7 +3,7 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "../Column/Column";
 import { Container } from "./styled";
 import { data, columns, columnOrder } from "./data";
-import { IChore, IColumn } from "../../types/board";
+import { IChore, IColumn, ChoreState } from "../../types/board";
 
 const reorder = (list: IChore[], startIndex: number, endIndex: number) => {
 	const result = Array.from(list);
@@ -17,12 +17,26 @@ const Board: React.FC = () => {
 	const [chores, setChores]: [IChore[], any] = useState(data);
 
 	const onDragEnd = (result: DropResult) => {
+		// if the draggable didn't land on a droppable target
 		if (!result.destination) {
 			return;
 		}
 
-		if (result.destination.index === result.source.index) {
+		// if the draggable didn't move positions in the droppable
+		if (
+			result.source.droppableId === result.destination.droppableId &&
+			result.destination.index === result.source.index
+		) {
 			return;
+		}
+
+		// if the draggable switched droppables
+		if (result.source.droppableId !== result.destination.droppableId) {
+			chores.forEach((chore: IChore) => {
+				if (chore.id === result.draggableId) {
+					chore.state = ChoreState.DONE;
+				}
+			});
 		}
 
 		setChores(reorder(chores, result.source.index, result.destination.index));
@@ -32,17 +46,13 @@ const Board: React.FC = () => {
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Container>
 				{columnOrder.map((columnId: string) => {
-					console.log("columnId ", columnId);
 					const column = columns.find(
 						(column: IColumn) => column.id === columnId
 					);
-					console.log("column ", column);
-					console.log("chores ", chores);
+					if (!column) return null;
 					const columnChores = chores.filter((chore: IChore) => {
-						console.log("chore ", chore);
-						return chore.status === column.status;
+						return chore.state === column.state;
 					});
-					console.log("columnChores ", columnChores);
 
 					return (
 						<Column

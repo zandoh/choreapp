@@ -10,6 +10,7 @@ interface ChoreProps {
 
 const Chore: React.FC<ChoreProps> = (props: ChoreProps) => {
 	const { id, index, content } = props;
+
 	return (
 		<Draggable draggableId={id} index={index}>
 			{provided => (

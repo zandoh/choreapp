@@ -1,13 +1,13 @@
 export interface IChore {
 	id: string;
 	content: string;
-	status: ChoreState;
+	state: ChoreState;
 }
 
 export interface IColumn {
 	id: string;
 	title: string;
-	status: ChoreState;
+	state: ChoreState;
 }
 
 export enum ChoreState {
