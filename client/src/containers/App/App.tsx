@@ -12,7 +12,7 @@ import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import { routes } from "../../util";
 
-const App: React.FC = () => {
+const App: React.FC = (props: any) => {
 	return (
 		<Router>
 			<Switch>
