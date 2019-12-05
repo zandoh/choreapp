@@ -13,9 +13,8 @@ export const Title = styled.h3`
 	padding: 8px;
 `;
 export const ChoreList = styled.div`
-  padding: 8px;
-  transition: background-color 0.2s ease;
-  background-color: ${props => (props.isDraggingOver ? "skyblue" : "white")}
-  flex-grow: 1;
-  min-height: 100px;
+	padding: 8px;
+	transition: background-color 0.2s ease;
+	flex-grow: 1;
+	min-height: 100px;
 `;

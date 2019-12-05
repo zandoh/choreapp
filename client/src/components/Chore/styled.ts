@@ -6,10 +6,4 @@ export const Container = styled.div`
 	padding: 8px;
 	margin-bottom: 8px;
 	transition: background-color 0.2s ease;
-	background-color: ${props =>
-		props.isDragDisabled
-			? "lightgrey"
-			: props.isDragging
-			? "lightgreen"
-			: "white"};
 `;

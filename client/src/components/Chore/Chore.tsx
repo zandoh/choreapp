@@ -10,16 +10,13 @@ interface ChoreProps {
 
 const Chore: React.FC<ChoreProps> = (props: ChoreProps) => {
 	const { id, index, content } = props;
-	const isDragDisabled = id === "task-1";
 	return (
-		<Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
-			{(provided, snapshot) => (
+		<Draggable draggableId={id} index={index}>
+			{provided => (
 				<Container
+					ref={provided.innerRef}
 					{...provided.draggableProps}
 					{...provided.dragHandleProps}
-					innerRef={provided.innerRef}
-					isDragging={snapshot.isDragging}
-					isDragDisabled={isDragDisabled}
 				>
 					{content}
 				</Container>

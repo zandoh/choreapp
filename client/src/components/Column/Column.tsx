@@ -2,26 +2,23 @@ import React from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { Container, Title, ChoreList } from "./styled";
 import Chore from "../Chore/Chore";
-import { IChore } from "../../types/chore";
+import { IChore } from "../../types/board";
 
 interface ColumnProps {
 	title: string;
 	id: string;
-	chores: IChore[];
+	chores?: IChore[];
 }
 
 const Column: React.FC<ColumnProps> = (props: ColumnProps) => {
-	const { title, id, chores } = props;
+	const { title, id, chores = [] } = props;
+	console.log("chores ", chores);
 	return (
 		<Container>
 			<Title>{title}</Title>
 			<Droppable droppableId={id} type="CHORE">
-				{(provided, snapshot) => (
-					<ChoreList
-						innerRef={provided.innerRef}
-						{...provided.droppableProps}
-						isDraggingOver={snapshot.isDraggingOver}
-					>
+				{provided => (
+					<ChoreList ref={provided.innerRef} {...provided.droppableProps}>
 						{chores.map((chore, index) => (
 							<Chore
 								key={chore.id}
