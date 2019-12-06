@@ -1,18 +1,19 @@
 service: choreapp-api
 
-frameworkVersion: ">=1.21.0 <2.0.0"
+frameworkVersion: '>=1.21.0 <2.0.0'
 
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
   package:
     individually: true
     exclude:
       - node_modules
   environment:
-    RANDOM_TABLE: Random-${self:provider.stage}
+    CHORES_FEDERATION_URL: ${file(./serverless.env.yml):${self:provider.stage}.CHORES_FEDERATION_URL}
+    DYNAMO_DB_ENV: ${file(./serverless.env.yml):${self:provider.stage}.DYNAMO_DB_ENV}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -23,11 +24,11 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.RANDOM_TABLE}"
+      Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/Random-${self:provider.environment.DYNAMO_DB_ENV}'
     - Effect: Allow
       Action:
         - lambda:GetLayerVersion
-      Resource: "*"
+      Resource: '*'
 
 plugins:
   - serverless-dotenv-plugin
@@ -38,15 +39,12 @@ custom:
   serverless-offline:
     port: 4000
   webpack:
-    webpackConfig: "webpack.config.js"
+    webpackConfig: 'webpack.config.js'
     includeModules: false
-    packager: "yarn"
-  scripts:
-    hooks:
-      "after:package:createDeploymentArtifacts": "console.log('hello');"
+    packager: 'yarn'
 
 functions:
-  graphql:
+  gateway:
     handler: src/handler.handler
     layers:
       - { Ref: DependenciesLayerLambdaLayer }
@@ -59,9 +57,9 @@ functions:
 resources:
   Resources:
     RandomTable:
-      Type: "AWS::DynamoDB::Table"
+      Type: 'AWS::DynamoDB::Table'
       Properties:
-        TableName: ${self:provider.environment.RANDOM_TABLE}
+        TableName: !Ref Random-${self:provider.environment.DYNAMO_DB_ENV}
         AttributeDefinitions:
           - AttributeName: randomNumberId
             AttributeType: S
