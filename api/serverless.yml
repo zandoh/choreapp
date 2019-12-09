@@ -10,7 +10,7 @@ provider:
     exclude:
       - node_modules
   environment:
-    CHORES_FEDERATION_URL: ${file(./serverless.env.yml):${self:provider.stage}.CHORES_FEDERATION_URL}
+    RANDOM_FEDERATION_URL: ${file(./serverless.env.yml):${self:provider.stage}.RANDOM_FEDERATION_URL}
     DYNAMO_DB_ENV: ${file(./serverless.env.yml):${self:provider.stage}.DYNAMO_DB_ENV}
   iamRoleStatements:
     - Effect: Allow
@@ -47,11 +47,11 @@ functions:
       - { Ref: DependenciesLayerLambdaLayer }
     events:
       - http:
-          path: api
+          path: /
           method: post
           cors: true
-  chores:
-    handler: src/services/chores/chores.handler
+  random:
+    handler: src/services/random/resolver.handler
     layers:
       - { Ref: DependenciesLayerLambdaLayer }
     events:

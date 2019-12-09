@@ -5,7 +5,6 @@ const nodeExternals = require('webpack-node-externals');
 module.exports = {
 	entry: {
 		...slsw.lib.entries,
-		app: path.join(__dirname, '/src/graphql/app.ts'),
 	},
 	optimization: {
 		minimize: false,
@@ -20,7 +19,11 @@ module.exports = {
 	module: {
 		rules: [
 			{ test: /\.ts(x?)$/, loader: 'ts-loader' },
-			{ test: /\.graphql|gql?$/, loader: 'webpack-graphql-loader' },
+			{
+				test: /\.(graphql|gql)$/,
+				exclude: /node_modules/,
+				loader: 'graphql-tag/loader',
+			},
 		],
 	},
 	output: {

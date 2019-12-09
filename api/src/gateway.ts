@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent, Context, Callback } from 'aws-lambda';
 import { ApolloServer } from 'apollo-server-lambda';
 import { ApolloGateway, RemoteGraphQLDataSource } from '@apollo/gateway';
+import { DynamoClient } from 'choreapp-util/dynamo';
 
 export enum Environments {
 	PROD = 'prod',
@@ -8,8 +9,30 @@ export enum Environments {
 	LOCAL = 'local',
 }
 
-interface AppGraphQLContext {
+/**
+ * User data parsed out of the JWT
+ */
+export interface AppUserContext {
 	userID: string;
+	username: string;
+	email: string;
+	organization: string;
+}
+
+/**
+ * Injects the user into the incoming API gateway event after
+ * JWT claims have been verified
+ */
+export interface AppGraphQLEvent extends APIGatewayProxyEvent {
+	user: AppUserContext;
+}
+
+/**
+ * Data passed to every resolver function
+ */
+export interface AppGraphQLContext {
+	dynamoClient: DynamoClient;
+	user: AppUserContext;
 }
 
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
@@ -21,26 +44,36 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
 	}
 }
 
-const getUserId = (token: string): string => token;
+const getUserId = (token: string): AppUserContext => {
+	return {
+		userID: token,
+		username: '',
+		email: '',
+		organization: '',
+	};
+};
 
 const server = new ApolloServer({
 	gateway: new ApolloGateway({
-		serviceList: [{ name: 'random', url: process.env.CHORES_FEDERATION_URL }],
+		serviceList: [{ name: 'random', url: process.env.RANDOM_FEDERATION_URL }],
 		buildService({ url }) {
 			return new AuthenticatedDataSource({ url });
 		},
 	}),
 	subscriptions: false,
 	debug: process.env.APP_ENV === Environments.PROD ? false : true,
-	context: ({ event }): AppGraphQLContext => {
+	context: ({ event }: { event: AppGraphQLEvent }): AppGraphQLContext => {
 		const token =
 			event?.headers['authorization'] || event?.headers['Authorization'];
 
 		// try to retrieve a user with the token
-		const userID = getUserId(token);
+		const user = getUserId(token);
 
 		// add the user to the context
-		return { userID };
+		return {
+			dynamoClient: new DynamoClient(),
+			user,
+		};
 	},
 });
 
