@@ -27,7 +27,7 @@
 		"schemaglue": "^4.0.4"
 	},
 	"devDependencies": {
-		"@types/aws-lambda": "^8.10.37",
+		"@types/aws-lambda": "^8.10.31",
 		"@types/graphql": "^14.2.0",
 		"@types/node": "^12.12.15",
 		"aws-sdk": "^2.585.0",
