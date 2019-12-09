@@ -1,10 +1,10 @@
 {
-  "extends": "../tsconfig",
-  "compileOnSave": true,
-  "compilerOptions": {
-    "sourceMap": true,
-    "allowJs": false
-  },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+	"extends": "../tsconfig",
+	"compileOnSave": true,
+	"compilerOptions": {
+		"sourceMap": true,
+		"allowJs": false
+	},
+	"include": ["src"],
+	"exclude": ["node_modules"]
 }

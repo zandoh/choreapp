@@ -4,9 +4,10 @@
 	"private": true,
 	"scripts": {
 		"test": "jest --no-cache --coverage",
-		"start": "bash start.sh",
+		"start": "serverless offline --stage local",
 		"deploy": "bash deploy.sh",
 		"deploy-prod": "serverless --stage=production deploy",
+		"i": "bash install.sh",
 		"latest": "yarn upgrade-interactive --latest"
 	},
 	"dependencies": {
@@ -17,6 +18,7 @@
 		"aws-lambda": "^0.1.2",
 		"babel-polyfill": "^6.26.0",
 		"babel-runtime": "^6.26.0",
+		"choreapp-util": "file:src/lib/choreapp-util",
 		"graphql": "^14.5.8",
 		"graphql-import": "^0.7.1",
 		"graphql-playground-middleware-lambda": "^1.7.13",

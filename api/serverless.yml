@@ -1,7 +1,5 @@
 service: choreapp-api
-
 frameworkVersion: '>=1.21.0 <2.0.0'
-
 provider:
   name: aws
   runtime: nodejs10.x
@@ -44,7 +42,16 @@ custom:
 
 functions:
   gateway:
-    handler: src/handler.handler
+    handler: src/gateway.handler
+    layers:
+      - { Ref: DependenciesLayerLambdaLayer }
+    events:
+      - http:
+          path: api
+          method: post
+          cors: true
+  chores:
+    handler: src/services/chores/chores.handler
     layers:
       - { Ref: DependenciesLayerLambdaLayer }
     events:
@@ -78,5 +85,6 @@ layers:
       include:
         - node_modules
         - node_modules/**/
+        - src/lib/**/
     compatibleRuntimes:
       - nodejs10.x
