@@ -4,10 +4,10 @@
 	"private": true,
 	"scripts": {
 		"test": "jest --no-cache --coverage",
-		"start": "serverless offline",
+		"start": "bash start.sh",
 		"deploy": "bash deploy.sh",
 		"deploy-prod": "serverless --stage=production deploy",
-		"latest": "yarn upgrade --interactive --latest"
+		"latest": "yarn upgrade-interactive --latest"
 	},
 	"dependencies": {
 		"@apollo/gateway": "^0.11.4",
@@ -25,12 +25,12 @@
 		"schemaglue": "^4.0.4"
 	},
 	"devDependencies": {
-		"@types/aws-lambda": "^8.10.36",
+		"@types/aws-lambda": "^8.10.37",
 		"@types/graphql": "^14.2.0",
-		"@types/node": "^12.12.14",
+		"@types/node": "^12.12.15",
 		"aws-sdk": "^2.585.0",
 		"concurrently": "^5.0.0",
-		"serverless": "^1.59.1",
+		"serverless": "^1.59.3",
 		"serverless-dotenv-plugin": "^2.1.1",
 		"serverless-offline": "^5.12.1",
 		"serverless-webpack": "^5.3.0",
