@@ -27,6 +27,10 @@ export const getUserFromToken = (token: string): AppUserContext => ({
 	organization: 'testco',
 });
 
+/**
+ * Gets the user information from the database based on a userID
+ * @param userID
+ */
 export const getUserFromId = (userID: string): AppUserContext => ({
 	userID: 'abc123',
 	username: 'test',
