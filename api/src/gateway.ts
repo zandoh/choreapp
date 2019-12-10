@@ -1,39 +1,11 @@
 import { APIGatewayProxyEvent, Context, Callback } from 'aws-lambda';
 import { ApolloServer } from 'apollo-server-lambda';
 import { ApolloGateway, RemoteGraphQLDataSource } from '@apollo/gateway';
-import { DynamoClient } from 'choreapp-util/dynamo';
-
-export enum Environments {
-	PROD = 'prod',
-	DEV = 'dev',
-	LOCAL = 'local',
-}
-
-/**
- * User data parsed out of the JWT
- */
-export interface AppUserContext {
-	userID: string;
-	username: string;
-	email: string;
-	organization: string;
-}
-
-/**
- * Injects the user into the incoming API gateway event after
- * JWT claims have been verified
- */
-export interface AppGraphQLEvent extends APIGatewayProxyEvent {
-	user: AppUserContext;
-}
-
-/**
- * Data passed to every resolver function
- */
-export interface AppGraphQLContext {
-	dynamoClient: DynamoClient;
-	user: AppUserContext;
-}
+import {
+	Environments,
+	getUserFromToken,
+	AppUserContext,
+} from './lib/choreapp-util/common';
 
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
 	willSendRequest(params: any) {
@@ -44,15 +16,6 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
 	}
 }
 
-const getUserId = (token: string): AppUserContext => {
-	return {
-		userID: token,
-		username: '',
-		email: '',
-		organization: '',
-	};
-};
-
 const server = new ApolloServer({
 	gateway: new ApolloGateway({
 		serviceList: [{ name: 'random', url: process.env.RANDOM_FEDERATION_URL }],
@@ -62,18 +25,11 @@ const server = new ApolloServer({
 	}),
 	subscriptions: false,
 	debug: process.env.APP_ENV === Environments.PROD ? false : true,
-	context: ({ event }: { event: AppGraphQLEvent }): AppGraphQLContext => {
+	context: ({ event }: { event: APIGatewayProxyEvent }): AppUserContext => {
 		const token =
 			event?.headers['authorization'] || event?.headers['Authorization'];
 
-		// try to retrieve a user with the token
-		const user = getUserId(token);
-
-		// add the user to the context
-		return {
-			dynamoClient: new DynamoClient(),
-			user,
-		};
+		return getUserFromToken(token);
 	},
 });
 

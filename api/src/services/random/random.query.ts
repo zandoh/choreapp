@@ -1,5 +1,5 @@
-import { AppGraphQLContext } from '../../gateway';
-import { AppDynamoTables } from 'choreapp-util/dynamo';
+import { AppDynamoTables } from '../../lib/choreapp-util/dynamo';
+import { AppGraphQLContext } from '../../lib/choreapp-util/common';
 
 interface AppRandomList {
 	list: number[];

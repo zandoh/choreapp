@@ -1,9 +1,0 @@
-{
-  "extends": "../../../tsconfig",
-  "compileOnSave": true,
-  "compilerOptions": {
-    "sourceMap": true,
-    "allowJs": false
-  },
-  "typeRoots": ["node_modules", "node_modules/@types"]
-}
