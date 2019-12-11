@@ -1,10 +1,9 @@
 {
-  "extends": "../tsconfig",
-  "compileOnSave": true,
-  "compilerOptions": {
-    "sourceMap": true,
-    "allowJs": false
-  },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+	"extends": "../tsconfig",
+	"compilerOptions": {
+		"sourceMap": true,
+		"allowJs": false
+	},
+	"include": ["src", "gateway.d.ts"],
+	"exclude": ["node_modules"]
 }
