@@ -31,4 +31,4 @@ yarn install --prod
 
 echo '[API] Deploying...'
 cd ../../../
-serverless --stage=$env deploy
+serverless deploy --stage=$env

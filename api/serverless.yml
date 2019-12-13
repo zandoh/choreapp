@@ -1,5 +1,10 @@
 service: choreapp-api
-frameworkVersion: '>=1.21.0 <2.0.0'
+frameworkVersion: ">=1.21.0 <2.0.0"
+conditions:
+  createProd:
+    Fn::Equals:
+      - ${opt:stage}
+      - prod
 provider:
   name: aws
   runtime: nodejs10.x
@@ -22,27 +27,38 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/Random-${self:provider.environment.DYNAMO_DB_ENV}'
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/Random-${self:provider.environment.DYNAMO_DB_ENV}"
     - Effect: Allow
       Action:
         - lambda:GetLayerVersion
-      Resource: '*'
+      Resource: "*"
 
 plugins:
+  - serverless-domain-manager
   - serverless-webpack
   - serverless-offline
 
 custom:
+  domain:
+    dev: "chores-dev.zclabs.io"
+    prod: "chores.zclabs.io"
   serverless-offline:
     port: 4000
   webpack:
-    webpackConfig: 'webpack.config.js'
+    webpackConfig: "webpack.config.js"
     includeModules: false
-    packager: 'yarn'
+    packager: "yarn"
+  customDomain:
+    domainName: ${self:custom.domain.${opt:stage}}
+    basePath: ""
+    stage: ${self:provider.stage}
+    createRoute53Record: true
 
 functions:
   gateway:
     handler: src/gateway.handler
+    memorySize: 1024
+    timeout: 6
     layers:
       - { Ref: DependenciesLayerLambdaLayer }
     events:
@@ -52,6 +68,8 @@ functions:
           cors: true
   random:
     handler: src/services/random/resolver.handler
+    memorySize: 1024
+    timeout: 6
     layers:
       - { Ref: DependenciesLayerLambdaLayer }
     events:
@@ -63,9 +81,9 @@ functions:
 resources:
   Resources:
     RandomTable:
-      Type: 'AWS::DynamoDB::Table'
+      Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: !Ref Random-${self:provider.environment.DYNAMO_DB_ENV}
+        TableName: "Random-${self:provider.environment.DYNAMO_DB_ENV}"
         AttributeDefinitions:
           - AttributeName: randomNumberId
             AttributeType: S
