@@ -5,7 +5,7 @@ frameworkVersion: ">=1.21.0 <2.0.0"
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
 
 plugins:
@@ -13,7 +13,7 @@ plugins:
 
 custom:
   client:
-    bucketName: choreapp-client-dev
+    bucketName: choreapp-client-${self:provider.stage}
     distributionFolder: /build
     indexDocument: index.html
     errorDocument: index.html

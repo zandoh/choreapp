@@ -40,8 +40,8 @@ plugins:
 
 custom:
   domain:
-    dev: "chores-dev.zclabs.io"
-    prod: "chores.zclabs.io"
+    dev: "chores-dev.api.zclabs.io"
+    prod: "chores.api.zclabs.io"
   serverless-offline:
     port: 4000
   webpack:
@@ -49,7 +49,7 @@ custom:
     includeModules: false
     packager: "yarn"
   customDomain:
-    domainName: ${self:custom.domain.${opt:stage}}
+    domainName: ${self:custom.domain.${self:provider.stage}}
     basePath: ""
     stage: ${self:provider.stage}
     createRoute53Record: true
@@ -74,7 +74,7 @@ functions:
       - { Ref: DependenciesLayerLambdaLayer }
     events:
       - http:
-          path: api
+          path: /random
           method: post
           cors: true
 

@@ -29,6 +29,9 @@ echo '[API] Installing packages...'
 cd src/layer/nodejs
 yarn install --prod
 
+echo '[API] Creating Domain...'
+sls create_domain --stage=$env
+
 echo '[API] Deploying...'
 cd ../../../
 serverless deploy --stage=$env
