@@ -36,7 +36,7 @@ if [ $buildReturnVal -ne 0 ]; then
 fi
 
 echo '[CLIENT] Deploying...'
-serverless client deploy
+serverless deploy
 deployReturnVal=$?
 if [ $deployReturnVal -ne 0 ]; then
     echo "[ERROR] Client deploy failed"

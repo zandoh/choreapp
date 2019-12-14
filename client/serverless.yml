@@ -1,19 +1,62 @@
 service: choreapp-client
-
 frameworkVersion: ">=1.21.0 <2.0.0"
-
+conditions:
+  createProd:
+    Fn::Equals:
+      - ${opt:stage}
+      - prod
 provider:
   name: aws
   runtime: nodejs10.x
   stage: ${opt:stage, 'dev'}
   region: us-east-1
-
 plugins:
-  - serverless-finch
-
+  - serverless-s3-sync
 custom:
-  client:
-    bucketName: choreapp-client-${self:provider.stage}
-    distributionFolder: /build
-    indexDocument: index.html
-    errorDocument: index.html
+  domain:
+    dev: "chores-dev.zclabs.io"
+    prod: "chores.zclabs.io"
+  hostedZoneName: ${self:custom.domain.${self:provider.stage}}
+  aliasHostedZoneId: Z3AQBSTGFYJSTF # us-east-1
+  aliasDNSName: s3-website-us-east-1.amazonaws.com
+  s3Sync:
+    - bucketName: ${self:custom.hostedZoneName}
+      localDir: build
+      params:
+        - index.html:
+            CacheControl: "no-cache"
+        - "*.js":
+            CacheControl: "public, max-age=2592000" # 30 days
+resources:
+  Resources:
+    StaticSite:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${self:custom.domain.${self:provider.stage}}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+    S3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: StaticSite
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+              Resource:
+                Fn::Join: ["", ["arn:aws:s3:::", { "Ref": "StaticSite" }, "/*"]]
+    DnsRecord:
+      Type: "AWS::Route53::RecordSet"
+      Properties:
+        AliasTarget:
+          DNSName: ${self:custom.aliasDNSName}
+          HostedZoneId: ${self:custom.aliasHostedZoneId}
+        HostedZoneName: ${self:custom.domain.${self:provider.stage}}.
+        Name:
+          Ref: StaticSite
+        Type: "A"
