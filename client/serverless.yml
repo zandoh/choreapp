@@ -36,27 +36,59 @@ resources:
         BucketName: ${self:custom.domain.${self:provider.stage}}
         WebsiteConfiguration:
           IndexDocument: index.html
-    S3BucketPolicy:
-      Type: AWS::S3::BucketPolicy
+          ErrorDocument: error.html
+    StaticSiteCDN:
+      Type: AWS::CloudFront::Distribution
       Properties:
-        Bucket:
-          Ref: StaticSite
-        PolicyDocument:
-          Statement:
-            - Sid: PublicReadGetObject
-              Effect: Allow
-              Principal: "*"
-              Action:
-                - s3:GetObject
-              Resource:
-                Fn::Join: ["", ["arn:aws:s3:::", { "Ref": "StaticSite" }, "/*"]]
+        DistributionConfig:
+          Comment: CDN for ${self:custom.domain.${self:provider.stage}}
+          Aliases:
+            - !Join [
+                "",
+                [
+                  !Ref "AWS::StackName",
+                  !Ref "AWS::AccountId",
+                  .,
+                  !Ref "AWS::Region",
+                  .,
+                  "${self:custom.domain.${self:provider.stage}}",
+                ],
+              ]
+          Enabled: "true"
+          DefaultCacheBehavior:
+            ForwardedValues:
+              QueryString: "true"
+            TargetOriginId: only-origin
+            ViewerProtocolPolicy: allow-all
+          DefaultRootObject: index.html
+          ViewerCertificate:
+            SslSupportMethod: sni-only
+            AcmCertificateArn: # probably just be easier to create the ACM cert here?
+          Origins:
+            - CustomOriginConfig:
+                HTTPPort: "80"
+                HTTPSPort: "443"
+                OriginProtocolPolicy: http-only
+              DomainName:
+                !Join ["", [!Ref "StaticSite", "${self:custom.aliasDNSName}"]]
+              Id: only-origin
     DnsRecord:
       Type: "AWS::Route53::RecordSet"
       Properties:
-        AliasTarget:
-          DNSName: ${self:custom.aliasDNSName}
-          HostedZoneId: ${self:custom.aliasHostedZoneId}
         HostedZoneName: ${self:custom.domain.${self:provider.stage}}.
         Name:
-          Ref: StaticSite
-        Type: "A"
+          !Join [
+            "",
+            [
+              !Ref "AWS::StackName",
+              !Ref "AWS::AccountId",
+              .,
+              !Ref "AWS::Region",
+              .,
+              "${self:custom.domain.${self:provider.stage}}",
+            ],
+          ]
+        Type: CNAME
+        TTL: "900"
+        ResourceRecords:
+          - !GetAtt [StaticSiteCDN, DomainName]
