@@ -11,10 +11,10 @@
 		"latest": "yarn upgrade-interactive --latest"
 	},
 	"dependencies": {
-		"@apollo/gateway": "^0.11.4",
-		"apollo-server": "^2.9.13",
-		"apollo-server-lambda": "^2.9.13",
-		"apollo-tracing": "^0.8.8",
+		"@apollo/gateway": "^0.11.6",
+		"apollo-server": "^2.9.15",
+		"apollo-server-lambda": "^2.9.15",
+		"apollo-tracing": "^0.8.10",
 		"aws-lambda": "^0.1.2",
 		"babel-polyfill": "^6.26.0",
 		"babel-runtime": "^6.26.0",
@@ -28,17 +28,17 @@
 	"devDependencies": {
 		"@types/aws-lambda": "^8.10.31",
 		"@types/graphql": "^14.2.0",
-		"@types/node": "^12.12.15",
-		"aws-sdk": "^2.585.0",
-		"concurrently": "^5.0.0",
-		"serverless": "^1.59.3",
+		"@types/node": "^13.1.2",
+		"aws-sdk": "^2.596.0",
+		"concurrently": "^5.0.2",
+		"serverless": "^1.60.4",
 		"serverless-domain-manager": "^3.3.0",
 		"serverless-dotenv-plugin": "^2.1.1",
 		"serverless-offline": "^5.12.1",
 		"serverless-webpack": "^5.3.0",
 		"ts-loader": "^6.2.1",
-		"typescript": "^3.7.3",
-		"webpack": "^4.41.2",
+		"typescript": "^3.7.4",
+		"webpack": "^4.41.5",
 		"webpack-graphql-loader": "^1.0.2",
 		"webpack-node-externals": "^1.7.2"
 	}
