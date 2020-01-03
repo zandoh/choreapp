@@ -12,8 +12,15 @@ import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
 import Board from "../../components/Board/Board";
 import Reports from "../../components/Reports/Reports";
 import { routes } from "../../util";
+import { RandomNumberById } from "../../services/random";
+import { useQuery } from "@apollo/react-hooks";
 
 const Dashboard: React.FC = () => {
+	const { loading, data } = useQuery(RandomNumberById, {
+		variables: { id: "abc123" }
+	});
+	console.log("loading ", loading);
+	console.log("data ", data);
 	return (
 		<Router>
 			<DashboardLayout>
@@ -28,6 +35,10 @@ const Dashboard: React.FC = () => {
 						<ProtectedRoute path={routes.REPORTS} component={Reports} />
 						<ProtectedRoute path={routes.DASHBOARD} component={Board} />
 					</Switch>
+					<p>
+						{loading}
+						{data}
+					</p>
 				</BodyLayout>
 			</DashboardLayout>
 		</Router>

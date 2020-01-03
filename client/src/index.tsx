@@ -12,6 +12,8 @@ import { appTheme } from "./theme";
 import { UserState } from "./store/user/types";
 import { CognitoService } from "./services/cognito";
 import { Global, css } from "@emotion/core";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
 
 const persistedUser: UserState = {
 	jwt: CognitoService.getUserTokenFromLocalStorage()
@@ -22,6 +24,18 @@ export const store = createStore(
 	{ user: persistedUser },
 	composeWithDevTools()
 );
+
+export const client = new ApolloClient({
+	uri: process.env.REACT_APP_GRAPHQL_URL,
+	request: operation => {
+		const token = CognitoService.getUserTokenFromLocalStorage();
+		operation.setContext({
+			headers: {
+				authorization: token ? `Bearer ${token}` : ""
+			}
+		});
+	}
+});
 
 const globalStyles = css`
 	body::-webkit-scrollbar {
@@ -37,13 +51,15 @@ const globalStyles = css`
 `;
 
 ReactDOM.render(
-	<Provider store={store}>
-		<ThemeProvider theme={appTheme}>
-			<CSSReset />
-			<Global styles={globalStyles} />
-			<App />
-		</ThemeProvider>
-	</Provider>,
+	<ApolloProvider client={client}>
+		<Provider store={store}>
+			<ThemeProvider theme={appTheme}>
+				<CSSReset />
+				<Global styles={globalStyles} />
+				<App />
+			</ThemeProvider>
+		</Provider>
+	</ApolloProvider>,
 	document.getElementById("root") || document.createElement("div") // for testing
 );
 
