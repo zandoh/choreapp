@@ -3,7 +3,7 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "../Column/Column";
 import { Container } from "./styled";
 import { data, columns, columnOrder } from "./data";
-import { IChore, IColumn, ChoreState } from "../../types/board";
+import { IChore, IColumn } from "../../types/board";
 
 const reorder = (list: IChore[], startIndex: number, endIndex: number) => {
 	const result = Array.from(list);
@@ -36,7 +36,13 @@ const Board: React.FC = () => {
 			chores.forEach((chore: IChore) => {
 				if (chore.id === result.draggableId) {
 					console.log("chore ", chore);
-					chore.state = ChoreState.DONE;
+					const col = columns.find(col => {
+						if (col.id === result.destination!.droppableId) {
+							return true;
+						}
+						return false;
+					});
+					chore.state = col?.state ?? chore.state;
 				}
 			});
 		}
