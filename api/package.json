@@ -4,28 +4,24 @@
 	"private": true,
 	"scripts": {
 		"test": "jest --no-cache --coverage",
-		"start": "serverless offline --stage local",
-		"deploy": "bash deploy.sh env=dev",
-		"deploy-prod": "serverless --stage=production deploy",
+		"start": "yarn generate && serverless offline --stage local",
+		"deploy": "yarn generate && bash deploy.sh env=dev",
 		"i": "bash install.sh",
-		"latest": "yarn upgrade-interactive --latest"
+		"latest": "yarn upgrade-interactive --latest",
+		"generate": "graphql-codegen --config codegen.yml"
 	},
 	"dependencies": {
 		"@apollo/gateway": "^0.11.6",
 		"apollo-server": "^2.9.15",
 		"apollo-server-lambda": "^2.9.15",
-		"apollo-tracing": "^0.8.10",
 		"aws-lambda": "^0.1.2",
-		"babel-polyfill": "^6.26.0",
-		"babel-runtime": "^6.26.0",
 		"graphql": "^14.5.8",
-		"graphql-import": "^0.7.1",
-		"graphql-playground-middleware-lambda": "^1.7.13",
-		"graphql-tag": "^2.10.1",
-		"graphql-tools": "^4.0.6",
-		"schemaglue": "^4.0.4"
+		"graphql-tag": "^2.10.1"
 	},
 	"devDependencies": {
+		"@graphql-codegen/cli": "^1.11.2",
+		"@graphql-codegen/typescript": "^1.11.2",
+		"@graphql-codegen/typescript-resolvers": "^1.11.2",
 		"@types/aws-lambda": "^8.10.31",
 		"@types/graphql": "^14.2.0",
 		"@types/node": "^13.1.2",
