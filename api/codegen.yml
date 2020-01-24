@@ -6,7 +6,7 @@ generates:
       - "typescript"
       - "typescript-resolvers"
     config:
-      contextType: ./lib/choreapp-util/common#AppUserContext
+      contextType: ./lib/choreapp-util/common#AppGraphQLContext
       # namingConvention:
       #   typeNames: change-case#pascalCase
       #   enumValues: change-case#upperCase

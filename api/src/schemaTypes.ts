@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { AppUserContext } from './lib/choreapp-util/common';
+import { AppGraphQLContext } from './lib/choreapp-util/common';
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -135,23 +135,23 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'],
 }>;
 
-export type QueryResolvers<ContextType = AppUserContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+export type QueryResolvers<ContextType = AppGraphQLContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   getRandomList?: Resolver<Maybe<ResolversTypes['Random']>, ParentType, ContextType, QueryGetRandomListArgs>,
   getRandomNumberById?: Resolver<Maybe<Array<Maybe<ResolversTypes['RandomDynamoData']>>>, ParentType, ContextType, QueryGetRandomNumberByIdArgs>,
 }>;
 
-export type RandomResolvers<ContextType = AppUserContext, ParentType extends ResolversParentTypes['Random'] = ResolversParentTypes['Random']> = ResolversObject<{
+export type RandomResolvers<ContextType = AppGraphQLContext, ParentType extends ResolversParentTypes['Random'] = ResolversParentTypes['Random']> = ResolversObject<{
   list?: Resolver<Maybe<Array<Maybe<ResolversTypes['Int']>>>, ParentType, ContextType>,
   length?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   sum?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
 }>;
 
-export type RandomDynamoDataResolvers<ContextType = AppUserContext, ParentType extends ResolversParentTypes['RandomDynamoData'] = ResolversParentTypes['RandomDynamoData']> = ResolversObject<{
+export type RandomDynamoDataResolvers<ContextType = AppGraphQLContext, ParentType extends ResolversParentTypes['RandomDynamoData'] = ResolversParentTypes['RandomDynamoData']> = ResolversObject<{
   randomNumberId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
 }>;
 
-export type Resolvers<ContextType = AppUserContext> = ResolversObject<{
+export type Resolvers<ContextType = AppGraphQLContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>,
   Random?: RandomResolvers<ContextType>,
   RandomDynamoData?: RandomDynamoDataResolvers<ContextType>,
@@ -162,4 +162,4 @@ export type Resolvers<ContextType = AppUserContext> = ResolversObject<{
  * @deprecated
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
 */
-export type IResolvers<ContextType = AppUserContext> = Resolvers<ContextType>;
+export type IResolvers<ContextType = AppGraphQLContext> = Resolvers<ContextType>;

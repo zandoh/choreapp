@@ -1,19 +1,14 @@
 import { APIGatewayProxyEvent, Context, Callback } from "aws-lambda";
 import { ApolloServer } from "apollo-server-lambda";
 import { buildFederatedSchema } from "@apollo/federation";
-import { Queries } from "./random.query";
+import { resolvers } from "./resolvers";
 import typeDefs from "./schema.graphql";
-import { Resolvers } from "../../schemaTypes";
 import {
 	Environments,
 	getUserFromId,
 	AppGraphQLContext
 } from "../../lib/choreapp-util/common";
 import { DynamoClient } from "../../lib/choreapp-util/dynamo";
-
-const resolvers: Resolvers = {
-	Query: Queries
-};
 
 const server = new ApolloServer({
 	schema: buildFederatedSchema([

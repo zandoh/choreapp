@@ -67,7 +67,7 @@ functions:
           method: post
           cors: true
   random:
-    handler: src/services/random/resolver.handler
+    handler: src/services/random/handler.handler
     memorySize: 1024
     timeout: 6
     layers:
