@@ -2,22 +2,13 @@ import React, { useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "../Column/Column";
 import { Container } from "./styled";
-import { data, columns, columnOrder } from "./data";
-import { IChore, IColumn } from "../../types/board";
-
-const reorder = (list: IChore[], startIndex: number, endIndex: number) => {
-	const result = Array.from(list);
-	const [removed] = result.splice(startIndex, 1);
-	result.splice(endIndex, 0, removed);
-
-	return result;
-};
+import { data, columns } from "./data";
+import { IChore, ChoreState } from "../../types/board";
 
 const Board: React.FC = () => {
 	const [chores, setChores] = useState<IChore[]>(data);
 
 	const onDragEnd = (result: DropResult) => {
-		console.log("result ", result);
 		// if the draggable didn't land on a droppable target
 		if (!result.destination) {
 			return;
@@ -33,6 +24,7 @@ const Board: React.FC = () => {
 
 		// if the draggable switched droppables
 		if (result.source.droppableId !== result.destination.droppableId) {
+			// will want to make api call here
 			chores.forEach((chore: IChore) => {
 				if (chore.id === result.draggableId) {
 					console.log("chore ", chore);
@@ -42,32 +34,28 @@ const Board: React.FC = () => {
 						}
 						return false;
 					});
-					chore.state = col?.state ?? chore.state;
+					chore.state = col!.state ?? chore.state;
+					console.log(chore);
 				}
 			});
 		}
+		setChores(chores);
+	};
 
-		setChores(reorder(chores, result.source.index, result.destination.index));
+	const filterChoresForState = (state: string) => {
+		const filtered = chores.filter(chore => chore.state === ChoreState[state]);
+		return filtered;
 	};
 
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Container>
-				{columnOrder.map((columnId: string) => {
-					const column = columns.find(
-						(column: IColumn) => column.id === columnId
-					);
-					if (!column) return null;
-					const columnChores = chores.filter((chore: IChore) => {
-						return chore.state === column.state;
-					});
-
+				{Object.keys(ChoreState).map((state: string) => {
 					return (
 						<Column
-							key={column.id}
-							id={column.id}
-							title={column.title}
-							chores={columnChores}
+							key={`column-${state}`}
+							id={state}
+							chores={filterChoresForState(state)}
 						/>
 					);
 				})}

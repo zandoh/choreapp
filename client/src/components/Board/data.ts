@@ -13,20 +13,15 @@ export const data = [
 
 export const columns = [
 	{
-		id: "column-1",
-		title: "To do",
-		state: ChoreState.TO_DO
+		id: ChoreState.TO_DO,
+		title: "To do"
 	},
 	{
-		id: "column-2",
-		title: "In progress",
-		state: ChoreState.IN_PROGRESS
+		id: ChoreState.IN_PROGRESS,
+		title: "In progress"
 	},
 	{
-		id: "column-3",
-		title: "Done",
-		state: ChoreState.DONE
+		state: ChoreState.DONE,
+		title: "Done"
 	}
 ];
-
-export const columnOrder = ["column-1", "column-2", "column-3"];

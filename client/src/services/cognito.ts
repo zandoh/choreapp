@@ -46,7 +46,6 @@ const loginFailed = (err: any) => {
 };
 
 const forgotPassword = (data: any) => {
-	console.log("ForgotPassword success data ", data);
 	store.dispatch({
 		type: USER_FORGOT_PASSWORD
 	});
