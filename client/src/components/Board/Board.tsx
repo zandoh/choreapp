@@ -14,7 +14,7 @@ const reorder = (list: IChore[], startIndex: number, endIndex: number) => {
 };
 
 const Board: React.FC = () => {
-	const [chores, setChores]: [IChore[], any] = useState(data);
+	const [chores, setChores] = useState<IChore[]>(data);
 
 	const onDragEnd = (result: DropResult) => {
 		console.log("result ", result);
