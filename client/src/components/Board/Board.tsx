@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "../Column/Column";
 import { Container } from "./styled";
-import { data, columns } from "./data";
+import { data } from "./data";
 import { IChore, ChoreState } from "../../types/board";
 
 const Board: React.FC = () => {
@@ -22,29 +22,23 @@ const Board: React.FC = () => {
 			return;
 		}
 
-		// if the draggable switched droppables
-		if (result.source.droppableId !== result.destination.droppableId) {
+		// if the draggable switched droppables || switched positions
+		if (
+			result.source.droppableId !== result.destination.droppableId ||
+			result.source.index !== result.destination.index
+		) {
 			// will want to make api call here
-			chores.forEach((chore: IChore) => {
-				if (chore.id === result.draggableId) {
-					console.log("chore ", chore);
-					const col = columns.find(col => {
-						if (col.id === result.destination!.droppableId) {
-							return true;
-						}
-						return false;
-					});
-					chore.state = col!.state ?? chore.state;
-					console.log(chore);
-				}
-			});
+			setChores(
+				chores.map(chore => {
+					if (chore.id !== result.draggableId) return chore;
+					return {
+						...chore,
+						state: ChoreState[result.destination!.droppableId],
+						index: result.destination!.index
+					};
+				})
+			);
 		}
-		setChores(chores);
-	};
-
-	const filterChoresForState = (state: string) => {
-		const filtered = chores.filter(chore => chore.state === ChoreState[state]);
-		return filtered;
 	};
 
 	return (
@@ -55,7 +49,7 @@ const Board: React.FC = () => {
 						<Column
 							key={`column-${state}`}
 							id={state}
-							chores={filterChoresForState(state)}
+							chores={chores.filter(chore => chore.state === ChoreState[state])}
 						/>
 					);
 				})}

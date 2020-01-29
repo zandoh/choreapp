@@ -22,9 +22,16 @@ const Column: React.FC<ColumnProps> = (props: ColumnProps) => {
 			<Droppable droppableId={id} type="CHORE">
 				{provided => (
 					<ChoreList ref={provided.innerRef} {...provided.droppableProps}>
-						{chores.map((chore, index) => (
-							<Chore key={chore.id} id={chore.id} index={index} chore={chore} />
-						))}
+						{chores
+							.sort((a, b) => a.index - b.index)
+							.map((chore, index) => (
+								<Chore
+									key={chore.id}
+									id={chore.id}
+									index={index}
+									chore={chore}
+								/>
+							))}
 						{provided.placeholder}
 					</ChoreList>
 				)}

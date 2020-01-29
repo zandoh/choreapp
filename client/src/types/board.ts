@@ -2,6 +2,7 @@ export interface IChore {
 	id: string;
 	content: string;
 	state: ChoreState;
+	index: number;
 }
 
 export interface IColumn {
