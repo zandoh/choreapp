@@ -15,7 +15,7 @@
 		"apollo-server": "^2.9.15",
 		"apollo-server-lambda": "^2.9.15",
 		"apollo-tracing": "^0.8.10",
-		"aws-lambda": "^0.1.2",
+		"aws-lambda": "^1.0.5",
 		"babel-polyfill": "^6.26.0",
 		"babel-runtime": "^6.26.0",
 		"graphql": "^14.5.8",
